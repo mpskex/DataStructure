@@ -1,0 +1,16 @@
+#   Word DOC temp
+~*
+
+#   Mac OSX DS_Store
+.DS_Store
+
+#   Python Compiled Bytecode
+*.pyc
+
+#   obj files & binary
+*.o
+*.obj
+*.out
+*.exe
+*.so
+
