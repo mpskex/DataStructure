@@ -20,18 +20,32 @@ class MapGuide(object):
 	#       node_num:   number of node
 	#		map_path:	path to map data
 	def __init__(self, map_path):
+		#	define the infinite value in storage structure
+		self.INIFINITE = 9999
 		#   first load the map data from file or database
 		#   then copy each path distance to the path data
 		self.map = self.__LoadMap__(map_path)
-		#	define the infinite value in storage structure
-		self.INIFINITE = 9999
+		self.path = self.__GenPath__(self.map)
 		pass
 
 	#   private method to load map data
 	#       paras:
-	#       map: map data of matrix format
-	def __LoadMap__(self, map):
-		return np.load(map)
+	#       path2map: path to a matrix format binary file
+	def __LoadMap__(self, path2map):
+		return np.load(path2map)
+
+	#	private method to generate the neighbour table
+	def __GenPath__(self, map):
+		path = map.copy()
+		for i in range(path.shape[0]):
+			for j in range(path.shape[1]):
+				#	node_i has no path to node_j
+				if map[i][j] ==self.INIFINITE:
+					path[i][j] = -1
+				#	node_i to node_j and the former neighbour is i
+				else:
+					path[i][j] = i
+		return path
 
 	#   method to get data from object
 	#       paras:
@@ -51,17 +65,19 @@ class MapGuide(object):
 	#       paras:
 	#       node_src:   source of the routine
 	#       node_dst:   destination of the routine
-	def SSSP(self, node_src, node_dst):
+	def SSSP_Floyd(self, node_src, node_dst):
 		dist = self.map.copy()
-		path = np.zeros(dist.shape, np.int)
+		path = self.path.copy()
 		for i in range(dist.shape[0]):
 			for j in range(dist.shape[0]):
 				for k in range(dist.shape[0]):
 					if dist[i][j] + dist[j][k] < dist[i][k]:
 						dist[i][k] = dist[i][j] + dist[j][k]
+						path[i][k] = path[j][k]
 		return dist, path
 
 if __name__ == '__main__':
 	g = MapGuide("map_data.npy")
 	print "The map of Guide is:\n", g.map
-	print "The dist matrix of the Guide is:\n", g.SSSP(0,0)[0], "\n", g.SSSP(0,0)[1]
+	print "The generated path is:\n", g.path
+	print "The dist matrix of the Guide is:\n", g.SSSP_Floyd(0,0)[0], "\n", g.SSSP_Floyd(0,0)[1]
