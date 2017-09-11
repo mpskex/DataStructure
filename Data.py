@@ -20,6 +20,8 @@ class MapGuide(object):
 		#   first load the map data from file or database
 		#   then copy each path distance to the path data
 		self.map = self.__LoadMap__(map_path)
+		#	define the infinite value in storage structure
+		self.INIFINITE = 9999
 		pass
 
 	#   private method to load map data
@@ -32,14 +34,14 @@ class MapGuide(object):
 	#       paras:
 	#       none
 	def getData(self):
-		return self.data
+		pass
 
 	#   method to set data with a manifactured
 	#   matrix
 	#       paras:
 	#       data:   matrix data
 	def setData(self, data):
-		self.path = path
+		pass
 	
 	#   Single Source Shortest Path
 	#   method to get the best routine in graph G
@@ -47,9 +49,16 @@ class MapGuide(object):
 	#       node_src:   source of the routine
 	#       node_dst:   destination of the routine
 	def SSSP(self, node_src, node_dst):
-		
-		return self.data
+		dist = self.map.copy()
+		path = np.zeros(dist.shape, np.int)
+		for i in range(dist.shape[0]):
+			for j in range(dist.shape[0]):
+				for k in range(dist.shape[0]):
+					if dist[i][j] + dist[j][k] < dist[i][k]:
+						dist[i][k] = dist[i][j] + dist[j][k]
+		return dist, path
 
 if __name__ == '__main__':
 	g = MapGuide("map_data.npy")
-	print g.map
+	print "The map of Guide is:\n", g.map
+	print "The dist matrix of the Guide is:\n", g.SSSP(0,0)[0], "\n", g.SSSP(0,0)[1]
