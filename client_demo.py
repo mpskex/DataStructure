@@ -19,22 +19,6 @@ import json
 -   DataType(base64)
     -   Gambling/Fishing/Porn/Malicious/None(For Sending the Content)
 
-#   应答JSON包
-##  结构设计
--   Status(base64)
-    -   Responce Code
--   DataType(base64)
-    -   Describe
--   Data
-    -   Gambling
-        -   Status
-            -   Avaliable ss/ Not Avaliable
-        -   Data Field 
-            -   (could be empty)
-    -   Fishing
-    -   Porn
-    -   Malicious
-    
 PResp
     200   （成功）  服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页。 
 
