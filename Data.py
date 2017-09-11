@@ -3,6 +3,9 @@ import os
 import re
 import numpy as np
 
+#	mpsk
+#	Beijing University of Technology
+#	Copyright 2017
 
 #   This class is to storage the data
 #   of the neighbour table
