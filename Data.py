@@ -99,7 +99,8 @@ class MapGuide(object):
 	#		node_src:	name(num) of the source node 
 	#		node_dst:	name(num) of the destination node
 	def SSSP_Floyd(self, node_src, node_dst):
-		dist, path = SGT_Floyd_Upate()
+		dist, path = self.SGT_Floyd_Update()
+		
 		return dist[node_src][node_dst]
 
 
@@ -122,10 +123,13 @@ class MapGuide(object):
 		#	to the neigboured nodes
 		dist_vec = []
 		for i in range(self.dist_map.shape[0]):
+			#	fill with infinite
 			dist_vec.append(self.INIFINITE)
 		dist_vec[node_src] = 0
 		#	set the current node to source
 		node_cur = node_src
+		#	temp dist set to 0
+		temp_dist = 0
 		while(node_cur != node_dst):
 			#	set min equals to infinite(pre-defined)
 			min = self.INIFINITE
@@ -136,12 +140,15 @@ class MapGuide(object):
 			for i in range(self.dist_map.shape[1]):
 				#	avoid self pointing zero distance
 				if i != node_src:
-					#	nearest neighbour
-					if self.dist_map[node_cur][i] < min:
-						min = self.dist_map[node_cur][i]
-						node_next = i
-			#	check whether there is any circle in graph
-
+					if dist_vec[i] == self.INIFINITE and self.dist_map[node_cur][i] != self.INIFINITE:
+						dist_vec = self.dist_map[node_cur][i] + temp_dist
+					else:
+						#	nearest neighbour
+						if self.dist_map[node_cur][i] + temp_dist >= dist_vec[i]:
+							#	set the distance to vector
+							dist_vec[i] = self.dist_map[node_cur][i] + temp_dist
+							
+		
 						
 			
 		
@@ -152,3 +159,4 @@ if __name__ == '__main__':
 	print "The map of Guide is:\n", g.dist_map
 	print "The generated path is:\n", g.neigh_map
 	print "The dist matrix of the Guide is:\n", g.SGT_Floyd_Update()[0], "\n", g.SGT_Floyd_Update()[1]
+	print "The distance from node 0 to node 3 is:\n", g.SSSP_Floyd(0,3)
