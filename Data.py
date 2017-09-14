@@ -3,6 +3,11 @@ import os
 import re
 import numpy as np
 
+#	Map Structure:
+#	the dist_map[i][j] is the distance between node i and node j
+#	the neigh_map[i][j] means that the 
+
+
 #	mpsk
 #	Beijing University of Technology
 #	Copyright 2017
@@ -16,7 +21,8 @@ class MapGuide(object):
 
 	#   the init proc is to create the 
 	#   neighbour table with numpy
-	#       paras:
+	#	------------------------------------------------
+	#	paras:
 	#       node_num:   number of node
 	#		map_path:	path to map data
 	def __init__(self, map_path):
@@ -24,12 +30,13 @@ class MapGuide(object):
 		self.INIFINITE = 9999
 		#   first load the map data from file or database
 		#   then copy each path distance to the path data
-		self.map = self.__LoadMap__(map_path)
-		self.path = self.__GenPath__(self.map)
+		self.dist_map = self.__LoadMap__(map_path)
+		self.neigh_map = self.__GenPath__(self.dist_map)
 		pass
 
 	#   private method to load map data
-	#       paras:
+	#	------------------------------------------------
+	#	paras:
 	#       path2map: path to a matrix format binary file
 	def __LoadMap__(self, path2map):
 		return np.load(path2map)
@@ -60,24 +67,88 @@ class MapGuide(object):
 	def setData(self, data):
 		pass
 	
-	#   Single Source Shortest Path
-	#   method to get the best routine in graph G
-	#       paras:
-	#       node_src:   source of the routine
-	#       node_dst:   destination of the routine
-	def SSSP_Floyd(self, node_src, node_dst):
-		dist = self.map.copy()
-		path = self.path.copy()
+	#   Smallest Generated Tree
+	#	Algorithm of Floyd
+	#	------------------------------------------------
+	#   method to generate the smallest generated tree 
+	#	of this graph
+	#	------------------------------------------------
+	#	paras:
+	#		NULL
+	def SGT_Floyd_Update(self):
+		dist = self.dist_map.copy()
+		path = self.neigh_map.copy()
 		for i in range(dist.shape[0]):
 			for j in range(dist.shape[0]):
 				for k in range(dist.shape[0]):
+					#	avoid fake shortest path
 					if dist[i][j] + dist[j][k] < dist[i][k]:
 						dist[i][k] = dist[i][j] + dist[j][k]
 						path[i][k] = path[j][k]
 		return dist, path
+	
+	#	Single Source Shortest Path
+	#	Algorithm of Floyd
+	#	------------------------------------------------
+	#	Feature:
+	#		Find SSSP with a SGT struct
+	#	method to get the shortest source for the 
+	#	specific source node of this graph
+	#	------------------------------------------------
+	#	paras:
+	#		node_src:	name(num) of the source node 
+	#		node_dst:	name(num) of the destination node
+	def SSSP_Floyd(self, node_src, node_dst):
+		dist, path = SGT_Floyd_Upate()
+		return dist[node_src][node_dst]
+
+
+
+	#	Single Source Shortest Path
+	#	Algorithm of Dijstra
+	#	------------------------------------------------
+	#	Feature:
+	#		node
+	#	method to get the shortest source for the 
+	#	specific source node of this graph
+	#	------------------------------------------------
+	#	paras:
+	#		node_src:	name(num) of the source node 
+	#		node_dst:	name(num) of the destination node
+	def SSSP_Dijstra(self, node_src, node_dst):
+		#	list contains the node which the routine passed
+		path = []
+		#	initiate the distance vector which storage the distances
+		#	to the neigboured nodes
+		dist_vec = []
+		for i in range(self.dist_map.shape[0]):
+			dist_vec.append(self.INIFINITE)
+		dist_vec[node_src] = 0
+		#	set the current node to source
+		node_cur = node_src
+		while(node_cur != node_dst):
+			#	set min equals to infinite(pre-defined)
+			min = self.INIFINITE
+			#	set node_next to infinite
+			node_next = self.INIFINITE
+			#	for every neighbour of the node_cur
+			#	Caculate the nearest node
+			for i in range(self.dist_map.shape[1]):
+				#	avoid self pointing zero distance
+				if i != node_src:
+					#	nearest neighbour
+					if self.dist_map[node_cur][i] < min:
+						min = self.dist_map[node_cur][i]
+						node_next = i
+			#	check whether there is any circle in graph
+
+						
+			
+		
+		
 
 if __name__ == '__main__':
 	g = MapGuide("map_data.npy")
-	print "The map of Guide is:\n", g.map
-	print "The generated path is:\n", g.path
-	print "The dist matrix of the Guide is:\n", g.SSSP_Floyd(0,0)[0], "\n", g.SSSP_Floyd(0,0)[1]
+	print "The map of Guide is:\n", g.dist_map
+	print "The generated path is:\n", g.neigh_map
+	print "The dist matrix of the Guide is:\n", g.SGT_Floyd_Update()[0], "\n", g.SGT_Floyd_Update()[1]
