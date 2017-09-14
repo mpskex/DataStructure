@@ -100,8 +100,13 @@ class MapGuide(object):
 	#		node_dst:	name(num) of the destination node
 	def SSSP_Floyd(self, node_src, node_dst):
 		dist, path = self.SGT_Floyd_Update()
-		
-		return dist[node_src][node_dst]
+		node_cur = node_dst
+		temp_path = []
+		while node_cur != node_src:
+			temp_path.insert(0, int(path[node_src][node_cur]))
+			node_cur = int(path[node_src][node_cur])
+		temp_path.append(node_dst)
+		return dist[node_src][node_dst], temp_path
 
 
 
@@ -159,4 +164,4 @@ if __name__ == '__main__':
 	print "The map of Guide is:\n", g.dist_map
 	print "The generated path is:\n", g.neigh_map
 	print "The dist matrix of the Guide is:\n", g.SGT_Floyd_Update()[0], "\n", g.SGT_Floyd_Update()[1]
-	print "The distance from node 0 to node 3 is:\n", g.SSSP_Floyd(0,3)
+	print "The distance from node 0 to node 3 is:\n", g.SSSP_Floyd(0,4)[0], "\nThe path is:\n", g.SSSP_Floyd(0,4)[1]
