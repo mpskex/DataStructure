@@ -106,7 +106,7 @@ class MapGuide(object):
 			temp_path.insert(0, int(path[node_src][node_cur]))
 			node_cur = int(path[node_src][node_cur])
 		temp_path.append(node_dst)
-		return dist[node_src][node_dst], temp_path
+		return dist[node_src][node_dst], temp_patho
 
 
 
