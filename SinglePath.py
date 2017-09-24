@@ -17,7 +17,7 @@ import numpy as np
 #   For a weighted graph G, every distance
 #   is saved in the matrix M(i,j) for position
 #   row i and column j
-class MapGuide(object):
+class SinglePath(object):
 
 	#   the init proc is to create the 
 	#   neighbour table with numpy
@@ -106,7 +106,7 @@ class MapGuide(object):
 			temp_path.insert(0, int(path[node_src][node_cur]))
 			node_cur = int(path[node_src][node_cur])
 		temp_path.append(node_dst)
-		return dist[node_src][node_dst], temp_patho
+		return dist[node_src][node_dst], temp_path
 
 
 
@@ -164,4 +164,4 @@ if __name__ == '__main__':
 	print "The map of Guide is:\n", g.dist_map
 	print "The generated path is:\n", g.neigh_map
 	print "The dist matrix of the Guide is:\n", g.SGT_Floyd_Update()[0], "\n", g.SGT_Floyd_Update()[1]
-	print "The distance from node 0 to node 3 is:\n", g.SSSP_Floyd(0,4)[0], "\nThe path is:\n", g.SSSP_Floyd(0,4)[1]
+	print "The distance from node 0 to node 1 is:\n", g.SSSP_Floyd(0,1)[0], "\nThe path is:\n", g.SSSP_Floyd(0,1)[1]
