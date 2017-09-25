@@ -12,8 +12,6 @@ import numpy as np
 #	Beijing University of Technology
 #	Copyright 2017
 
-#   This class is to storage the data
-#   of the neighbour table
 #   For a weighted graph G, every distance
 #   is saved in the matrix M(i,j) for position
 #   row i and column j
@@ -23,7 +21,6 @@ class SinglePath(object):
 	#   neighbour table with numpy
 	#	------------------------------------------------
 	#	paras:
-	#       node_num:   number of node
 	#		map_path:	path to map data
 	def __init__(self, map_path):
 		#	define the infinite value in storage structure
@@ -32,6 +29,8 @@ class SinglePath(object):
 		#   then copy each path distance to the path data
 		self.dist_map = self.__LoadMap__(map_path)
 		self.neigh_map = self.__GenPath__(self.dist_map)
+		#	update the floyd matrix
+		self.dist, self.path = self.SGT_Floyd_Update()
 		pass
 
 	#   private method to load map data
@@ -99,16 +98,14 @@ class SinglePath(object):
 	#		node_src:	name(num) of the source node 
 	#		node_dst:	name(num) of the destination node
 	def SSSP_Floyd(self, node_src, node_dst):
-		dist, path = self.SGT_Floyd_Update()
+		#	get the full path
 		node_cur = node_dst
 		temp_path = []
 		while node_cur != node_src:
-			temp_path.insert(0, int(path[node_src][node_cur]))
-			node_cur = int(path[node_src][node_cur])
+			temp_path.insert(0, int(self.path[node_src][node_cur]))
+			node_cur = int(self.path[node_src][node_cur])
 		temp_path.append(node_dst)
-		return dist[node_src][node_dst], temp_path
-
-
+		return self.dist[node_src][node_dst], temp_path
 
 	#	Single Source Shortest Path
 	#	Algorithm of Dijstra
@@ -153,14 +150,8 @@ class SinglePath(object):
 							#	set the distance to vector
 							dist_vec[i] = self.dist_map[node_cur][i] + temp_dist
 							
-		
-						
-			
-		
-		
-
 if __name__ == '__main__':
-	g = MapGuide("map_data.npy")
+	g = SinglePath("map_data.npy")
 	print "The map of Guide is:\n", g.dist_map
 	print "The generated path is:\n", g.neigh_map
 	print "The dist matrix of the Guide is:\n", g.SGT_Floyd_Update()[0], "\n", g.SGT_Floyd_Update()[1]
