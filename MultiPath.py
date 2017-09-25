@@ -3,6 +3,7 @@
 
 import os
 import re
+import copy
 import numpy as np
 import SinglePath
 
@@ -19,7 +20,7 @@ import SinglePath
 #   Two point type:
 #       keypoint:   limited time
 #       waypoint:   don't care about time
-class Multipath(object):
+class MultiPath(object):
 
     #   the init function is to create floyd map for
     #   the specified graph G.
@@ -30,12 +31,8 @@ class Multipath(object):
         #   create single path control path
         self.singlepath = SinglePath.SinglePath(map_path)
         #   create 2D key point list
-        #   *   first dimension choose the list
-        #   *   second choose the keypoint
-        empty = []
+        #   keypoints[index][node_num/time_limit]
         self.keypoints = []
-        for i in range(1,2):
-            self.keypoints.append(empty)
         #   create the waypoint list
         self.waypoints = []
 
@@ -46,8 +43,7 @@ class Multipath(object):
     #       time_cost:  time cost this node limited
     def AddKeyPoint(self, node, time_cost):
         #   Add node to keypoints list
-        self.keypoints[0].append(node)
-        self.keypoints[1].append(time_cost)
+        self.keypoints.append((node, time_cost))
     
     #   Add WayPoint
     #   --------------------------------------------
@@ -61,6 +57,30 @@ class Multipath(object):
     #   MultiPath
     #   --------------------------------------------
     #   paras:
-    #       node:       keypoint node number
-    #       time_cost:  time cost this node limited
-    def CalcMultiPath(self,)
+    #       node_i:     start point
+    def CalcMultiPath(self, node_i):
+        if self.waypoints!=[] and self.keypoints!=[]:
+            #   DO
+            path = []
+            waypoint_list = self.waypoints
+            node_src = node_i
+            #   for every key point with limited time
+            for i in range(len(self.keypoints)):
+                #   get the time cost of key point
+                node_dst, cost_limit = self.keypoints[i]
+                #   set the source node of this sub function
+                cost_cur = 0
+                #   storage node passing
+                temp_path = []
+                temp_cost = []
+                #   This problem is a search in k-order tree
+                #   with the Depth First Strategy
+                #   backtrack to source
+                #   for it is a graph without direction
+                while node_cur != node_src:
+                    for n in waypoint_list:
+                        pass
+
+if __name__ == '__main__':
+    g = MultiPath("map_data.npy")
+    print g.CreateTree(0, [2,3,4], 5)

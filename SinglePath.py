@@ -31,6 +31,7 @@ class SinglePath(object):
 		self.neigh_map = self.__GenPath__(self.dist_map)
 		#	update the floyd matrix
 		self.dist, self.path = self.SGT_Floyd_Update()
+		self.map_size = self.dist_map.shape[0]
 		pass
 
 	#   private method to load map data
@@ -152,7 +153,7 @@ class SinglePath(object):
 							
 if __name__ == '__main__':
 	g = SinglePath("map_data.npy")
-	print "The map of Guide is:\n", g.dist_map
+	print "The map size is:\n", g.map_size, "\nThe map of Guide is:\n", g.dist_map
 	print "The generated path is:\n", g.neigh_map
 	print "The dist matrix of the Guide is:\n", g.SGT_Floyd_Update()[0], "\n", g.SGT_Floyd_Update()[1]
 	print "The distance from node 0 to node 1 is:\n", g.SSSP_Floyd(0,1)[0], "\nThe path is:\n", g.SSSP_Floyd(0,1)[1]
