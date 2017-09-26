@@ -6,6 +6,7 @@ import re
 import copy
 import numpy as np
 import SinglePath
+import PathTree
 
 #	mpsk
 #	Beijing University of Technology
@@ -50,7 +51,7 @@ class MultiPath(object):
     #   paras:
     #       node:       keypoint node number
     #       time_cost:  time cost this node limited
-    def AddKeyPoint(self, node):
+    def AddWayPoint(self, node):
         #   Add node to waypoints list
         self.waypoints.append(node)
 
@@ -63,24 +64,17 @@ class MultiPath(object):
             #   DO
             path = []
             waypoint_list = self.waypoints
-            node_src = node_i
+            pathtrees = []
             #   for every key point with limited time
             for i in range(len(self.keypoints)):
-                #   get the time cost of key point
-                node_dst, cost_limit = self.keypoints[i]
-                #   set the source node of this sub function
-                cost_cur = 0
-                #   storage node passing
-                temp_path = []
-                temp_cost = []
-                #   This problem is a search in k-order tree
-                #   with the Depth First Strategy
-                #   backtrack to source
-                #   for it is a graph without direction
-                while node_cur != node_src:
-                    for n in waypoint_list:
-                        pass
+                ptree = PathTree.PathTree()
+                pathtrees.append(ptree.CreateTree(i, waypoint_list, node_i))
+                print ptree.Tree
 
 if __name__ == '__main__':
     g = MultiPath("map_data.npy")
-    print g.CreateTree(0, [2,3,4], 5)
+    g.AddKeyPoint(2, 10)
+    g.AddKeyPoint(4, 15)
+    g.AddWayPoint(1)
+    g.AddWayPoint(3)
+    g.CalcMultiPath(0)
