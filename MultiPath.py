@@ -31,45 +31,54 @@ class MultiPath(object):
     def __init__(self, map_path):
         #   create single path control path
         self.singlepath = SinglePath.SinglePath(map_path)
-        #   create 2D key point list
-        #   keypoints[index][node_num/time_limit]
-        self.keypoints = []
         #   create the waypoint list
+        self.keypoints = []
         self.waypoints = []
 
     #   Add KeyPoint
     #   --------------------------------------------
     #   paras:
-    #       node:       keypoint node number
+    #       point:      keypoint node number
     #       time_cost:  time cost this node limited
-    def AddKeyPoint(self, node, time_cost):
+    def AddKeyPoint(self, point, time_cost):
         #   Add node to keypoints list
-        self.keypoints.append((node, time_cost))
+        p = PathTree.TreeNode(point)
+        p.cost = time_cost
+        self.keypoints.append(p)
+
     
     #   Add WayPoint
     #   --------------------------------------------
     #   paras:
-    #       node:       keypoint node number
+    #       point:      keypoint node number
     #       time_cost:  time cost this node limited
-    def AddWayPoint(self, node):
+    def AddWayPoint(self, point):
         #   Add node to waypoints list
-        self.waypoints.append(node)
+        self.waypoints.append(PathTree.TreeNode(point))
 
     #   MultiPath
     #   --------------------------------------------
     #   paras:
     #       node_i:     start point
-    def CalcMultiPath(self, node_i):
+    def CalcMultiPath(self, point_i):
+        node_src = PathTree.TreeNode(point_i)
         if self.waypoints!=[] and self.keypoints!=[]:
             #   DO
             path = []
-            waypoint_list = self.waypoints
+            key_nodes = copy.deepcopy(self.keypoints)
+            #   Node should be sort by time stamp
             pathtrees = []
             #   for every key point with limited time
-            for i in range(len(self.keypoints)):
-                ptree = PathTree.PathTree()
-                pathtrees.append(ptree.CreateTree(i, waypoint_list, node_i))
-                print ptree.Tree
+            while len(key_nodes) > 1:
+                node_dst = key_nodes[0]
+                way_nodes = copy.deepcopy(self.waypoints)
+                print "to ", node_dst.data, " from ", node_src.data
+                ptree = PathTree.PathTree(node_dst, way_nodes, node_src)
+                ptree.Print()
+                #   code here
+                node_src = node_dst
+                node_dst = key_nodes[1]
+                del key_nodes[0]
 
 if __name__ == '__main__':
     g = MultiPath("map_data.npy")

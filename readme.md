@@ -1,5 +1,68 @@
 #   数据结构课程设计
 
+#   Class
+## ***SinglePath***
+Provide node to node shortest path calculation Service
+
+|Attributes  | Note|
+|:------|:-----|
+|INIFINITE  |   Infinite value should be pre procceed, for example 9999|
+|dist_map   |   Origin Map data from file|
+|neigh_map  |   Origin Generated from the Origin map from file|
+|dist       |   Updated Floyd shortest distance map|
+|path       |   Updated Floyd shortest neighbour map|
+|map_size   |   size of the map|
+
+|Method |Argument|Note|
+|:------|:-----:|:----|
+|SGT_Floyd_Update() |   NONE    |   generate the smallest generated tree of this graph|
+|SSSP_Floyd()|  node_src, node_dst  |   Single Source Shortest Path|
+
+##  ***MultiPath***
+Provide source to destination shortest path calculation Service
+Planning route with specified strategy
+
+|Attributes  | Note|
+|:------|:-----|
+|singlepath |   SinglePath Object|
+|keypoints  |   list of keypoints with time cost limit|
+|waypoints  |   list of waypoint which is not sensitive to time|
+ 
+|Method |Argument|Note|
+|:------|:-----:|:----|
+|AddKeyPoint()  |   point, time_cost    |   Add keypoint to list|
+|AddWayPoint()  |   point   |   Add waypoint to list|
+|CalcMultiPath()    |   point_i |   planning route with specified strategy|
+
+##  ***PathTree***
+Structure to exhaust every route possible within the limited cost
+
+|Attributes  | Note|
+|:------|:-----|
+|NodeTree   |   TreeNode Object which is the root of the PathTree|
+ 
+|Method |Argument|Note|
+|:------|:-----:|:----|
+|UpdateCost()   |   node, dist_matrix, depth, num=1 |   update the cost of every node|
+|CreateTree()   |   parent, child_list, last_leaf   |  create a  path tree|
+|Print()        |   None    |   Print tree in root first order| 
+
+##  ***TreeNode***
+Tree node object that support the link tree structure
+
+|Attributes  | Note|
+|:------|:-----|
+|child  |   child list cotain TreeNode objects, like chain|
+|data   |   here we storage the node number|
+|cost   |   cost spent when arrive at this node|
+ 
+|Method |Argument|Note|
+|:------|:-----:|:----|
+|AddChild()   |   child |   Add a child node to child list|
+|SetChilds()   |   child_list   |  Set the child list to a specific node list|
+|toString()        |   None    |   Print tree node| 
+
+
 ##  基本要求
 *   以图形方式输出各场所平面地图，数据从文件读入，并提供出发时刻。
 *   提供所有场所名称，供用户选择，至少包括5个场所，至少包括上课或上机及时间和地点
