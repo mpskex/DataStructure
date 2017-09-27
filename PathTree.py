@@ -34,6 +34,8 @@ class TreeNode(object):
         self.child = []
         self.data = data
         self.cost = 0
+        self.cost_limit = 0
+        self.depth = 0
     def SetChilds(self, child_list):
         self.child = child_list
     def AddChild(self, child):
@@ -50,7 +52,8 @@ class PathTree(object):
     #       child_list
     #       lastleaf
     def __init__(self, root, child_list, lastleaf):
-        self.NodeTree = self.CreateTree(root, child_list, lastleaf)
+        self.NodeTree = self.CreateTree(root, child_list)
+        self.lastleaf = lastleaf
 
     #   Tree Creation
     #   --------------------------------------------
@@ -58,7 +61,7 @@ class PathTree(object):
     #       parent:   parent node
     #       child_list:   child node list
     #       lastleaf:   last leaf to be fill
-    def CreateTree(self, parent, child_list, lastleaf):
+    def CreateTree(self, parent, child_list):
         if child_list == []:
             return 
         return_child_list = []
@@ -72,7 +75,7 @@ class PathTree(object):
             p = TreeNode(n.data)
             parent.AddChild(p)
             #print parent.child
-            self.CreateTree(p, temp_child_list, lastleaf)
+            self.CreateTree(p, temp_child_list)
         self.NodeTree = parent
         return parent
 
@@ -81,11 +84,25 @@ class PathTree(object):
     #   paras:
     #       node:   root node in sub tree
     #       num:    count num start
-    def UpdateCost(self, node, dist_matrix, depth, num=1):
-        if node.child!=[]:
-            for i in node.child:
-                i.cost = node.cost + dist_matrix[i.data][node.data]
-                self.UpdateCost(i, dist_matrix, depth, num+1)
+    def UpdateCost(self, root, dist_matrix, num=1):
+        for i in root.child:
+            i.cost = root.cost + dist_matrix[i.data][root.data]
+            i.depth = num
+            self.UpdateCost(i, dist_matrix, num+1)
+
+    #   update the cost
+    #   --------------------------------------------
+    #   paras:
+    #       node:   root node in sub tree
+    #       num:    count num start
+    def ReduceTree(self, root, dist_matrix, cost_limit, num=1):
+        for i in root.child[:]:
+            total_cost = i.cost + dist_matrix[self.lastleaf.data][i.data]
+            print "to ", i.data, " path length is ", total_cost
+            if total_cost > cost_limit:
+                root.child.remove(i)
+            else:
+                self.ReduceTree(i, dist_matrix, cost_limit, num=num+1)
 
     #   pre-order traveler
     #   --------------------------------------------

@@ -43,7 +43,8 @@ class MultiPath(object):
     def AddKeyPoint(self, point, time_cost):
         #   Add node to keypoints list
         p = PathTree.TreeNode(point)
-        p.cost = time_cost
+        p.cost = 0
+        p.cost_limit = time_cost
         self.keypoints.append(p)
 
     
@@ -73,7 +74,11 @@ class MultiPath(object):
                 node_dst = key_nodes[0]
                 way_nodes = copy.deepcopy(self.waypoints)
                 print "to ", node_dst.data, " from ", node_src.data
+                #   Build Path Tree
                 ptree = PathTree.PathTree(node_dst, way_nodes, node_src)
+                #   Update all cost on each nodes
+                ptree.UpdateCost(ptree.NodeTree, self.singlepath.dist)
+                ptree.ReduceTree(ptree.NodeTree, self.singlepath.dist, key_nodes[0].cost_limit)
                 ptree.Print()
                 #   code here
                 node_src = node_dst

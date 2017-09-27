@@ -43,8 +43,9 @@ Structure to exhaust every route possible within the limited cost
  
 |Method |Argument|Note|
 |:------|:-----:|:----|
-|UpdateCost()   |   node, dist_matrix, depth, num=1 |   update the cost of every node|
+|UpdateCost()   |   root, dist_matrix, num=1 |   update the cost of every node|
 |CreateTree()   |   parent, child_list, last_leaf   |  create a  path tree|
+|ReduceTree()   |   root, dist_matrix, cost_limit, num=1    |   reduce the tree due to the cost limit|
 |Print()        |   None    |   Print tree in root first order| 
 
 ##  ***TreeNode***
@@ -81,7 +82,7 @@ Tree node object that support the link tree structure
     *   每一次用户添加数据路径点都相当于一次求解过程
     *   可以在用户得到目前最优解后，给出优化后的路线
     *   图以邻接表的形式存储
-    *   使用Prim算法求解单源最短路径
+    *   使用Floyd算法求解单源最短路径
     *   使用python完成所有功能的封装
 *   具体数据结构
     *   一个以到达时间要求排序的节点列表
