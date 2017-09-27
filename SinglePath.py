@@ -24,7 +24,7 @@ class SinglePath(object):
 	#		map_path:	path to map data
 	def __init__(self, map_path):
 		#	define the infinite value in storage structure
-		self.INIFINITE = 9999
+		self.INFINITE = 9999
 		#   first load the map data from file or database
 		#   then copy each path distance to the path data
 		self.dist_map = self.__LoadMap__(map_path)
@@ -47,7 +47,7 @@ class SinglePath(object):
 		for i in range(path.shape[0]):
 			for j in range(path.shape[1]):
 				#	node_i has no path to node_j
-				if map[i][j] ==self.INIFINITE:
+				if map[i][j] ==self.INFINITE:
 					path[i][j] = -1
 				#	node_i to node_j and the former neighbour is i
 				else:
@@ -107,49 +107,6 @@ class SinglePath(object):
 			node_cur = int(self.path[node_src][node_cur])
 		temp_path.append(node_dst)
 		return self.dist[node_src][node_dst], temp_path
-
-	#	Single Source Shortest Path
-	#	Algorithm of Dijstra
-	#	------------------------------------------------
-	#	Feature:
-	#		node
-	#	method to get the shortest source for the 
-	#	specific source node of this graph
-	#	------------------------------------------------
-	#	paras:
-	#		node_src:	name(num) of the source node 
-	#		node_dst:	name(num) of the destination node
-	def SSSP_Dijstra(self, node_src, node_dst):
-		#	list contains the node which the routine passed
-		path = []
-		#	initiate the distance vector which storage the distances
-		#	to the neigboured nodes
-		dist_vec = []
-		for i in range(self.dist_map.shape[0]):
-			#	fill with infinite
-			dist_vec.append(self.INIFINITE)
-		dist_vec[node_src] = 0
-		#	set the current node to source
-		node_cur = node_src
-		#	temp dist set to 0
-		temp_dist = 0
-		while(node_cur != node_dst):
-			#	set min equals to infinite(pre-defined)
-			min = self.INIFINITE
-			#	set node_next to infinite
-			node_next = self.INIFINITE
-			#	for every neighbour of the node_cur
-			#	Caculate the nearest node
-			for i in range(self.dist_map.shape[1]):
-				#	avoid self pointing zero distance
-				if i != node_src:
-					if dist_vec[i] == self.INIFINITE and self.dist_map[node_cur][i] != self.INIFINITE:
-						dist_vec = self.dist_map[node_cur][i] + temp_dist
-					else:
-						#	nearest neighbour
-						if self.dist_map[node_cur][i] + temp_dist >= dist_vec[i]:
-							#	set the distance to vector
-							dist_vec[i] = self.dist_map[node_cur][i] + temp_dist
 							
 if __name__ == '__main__':
 	g = SinglePath("map_data.npy")

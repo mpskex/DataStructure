@@ -98,7 +98,7 @@ class PathTree(object):
     def ReduceTree(self, root, dist_matrix, cost_limit, num=1):
         for i in root.child[:]:
             total_cost = i.cost + dist_matrix[self.lastleaf.data][i.data]
-            print "to ", i.data, " path length is ", total_cost
+            print "to ", i.data, " path length is ", total_cost, " limit is : ", cost_limit
             if total_cost > cost_limit:
                 root.child.remove(i)
             else:
