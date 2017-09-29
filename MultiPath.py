@@ -34,6 +34,7 @@ class MultiPath(object):
         #   create the waypoint list
         self.keypoints = []
         self.waypoints = []
+        self.INFINITE = 9999
 
     #   Add KeyPoint
     #   --------------------------------------------
@@ -102,6 +103,7 @@ class MultiPath(object):
     #   paras:
     #       node_i:     start point
     def CalcMultiPath(self, point_i):
+        #   Do the Path Tree Iterations
         if self.waypoints!=[] and self.keypoints!=[]:
             #   DO
             path = []
@@ -128,6 +130,28 @@ class MultiPath(object):
                 macro_path.append(self.__Macro_Path_Out__(ptree.NodeTree, node_src))
                 #   code here
                 del key_nodes[0]
+
+            #   if the way node is still not empty 
+            #   after the keynode iteration
+            if way_nodes!=[]:
+                #   Choose the nearest way point from the last key point
+                node_src = key_nodes[0]
+                node_cur = node_src
+                temp_path = [key_nodes[0].data]
+                temp_min_node_num = 0
+                temp_min_dist = self.INFINITE
+                while len(way_nodes)>1:
+                    for n in range(len(way_nodes)):
+                        if self.singlepath.dist[node_cur.data][way_nodes[n].data] < temp_min_dist:
+                            temp_min_node_num = n
+                            temp_min_dist = self.singlepath.dist[node_cur.data][way_nodes[n].data]
+                    temp_path.append(way_nodes[temp_min_node_num].data)
+                    node_cur = copy.deepcopy(way_nodes[temp_min_node_num])
+                    del way_nodes[temp_min_node_num]
+                temp_path.append(way_nodes[0].data)
+                macro_path.append(temp_path)
+            print macro_path
+
             #   concenate the path pieces into continuos path sequence
             mid_path = []
             for n in macro_path:
@@ -135,6 +159,7 @@ class MultiPath(object):
                     mid_path.append(m)
             mid_path.insert(0, macro_path[0][0])
             print "Macro Path is :\t", mid_path
+
             #   get list of single paths
             micro_path_p = []
             while len(mid_path)>1:
@@ -142,6 +167,7 @@ class MultiPath(object):
                 point_dst = mid_path[1]
                 micro_path_p.append(self.singlepath.SSSP_Floyd(point_src, point_dst)[1])
                 del mid_path[0]
+                
             #   get micro path
             micro_path = []
             for n in micro_path_p:
@@ -154,7 +180,7 @@ class MultiPath(object):
 if __name__ == '__main__':
     g = MultiPath("map_data.npy")
     g.AddKeyPoint(2, 10)
-    g.AddKeyPoint(4, 15)
+    #g.AddKeyPoint(4, 15)
     g.AddWayPoint(1)
     g.AddWayPoint(3)
     print "Final result:\t", g.CalcMultiPath(0)
