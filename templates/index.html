@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>m</title>
+	<style type="text/css" media="screen">
+		@import url("{{ url_for('static', filename='style.css')}}");
+	</style>
+	<script type="application/javascript" src = "{{url_for('static', filename='mycanvas.js')}}")></script>
+</head>
+<body onload="draw();">
+		<div align="center">
+			<!--主要画布-->
+			<div id="div_canv">
+				<div id="div_guide"><canvas id="guide"></canvas></div>
+				<div id="div_map"><canvas id="map"></canvas></div>
+			</div>
+		</div>
+		<footer align="center">
+			<a href="https://www.vultr.com/?ref=7176931"><img src="https://www.vultr.com/media/banner_1.png" width="728" height="90"></a>
+		</footer>
+	</body>
+</html>

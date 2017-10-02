@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+body{background:#000 url(bg.jpg) repeat 0 0 fixed } 
+canvas { border: 1px solid black; }
+#div_cav{position: relative;}  
+#div_guide{position: absolute;}

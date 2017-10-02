@@ -1,6 +1,10 @@
 #!/usr/bin/python
 #   coding: utf-8
 
+#	mpsk
+#	Beijing University of Technology
+#	Copyright 2017
+
 import os
 import numpy as np
 
