@@ -9,11 +9,20 @@
 	<script type="application/javascript" src = "{{url_for('static', filename='mycanvas.js')}}")></script>
 </head>
 <body onload="draw();">
-		<div align="center">
+		<div>
 			<!--主要画布-->
 			<div id="div_canv">
 				<div id="div_guide"><canvas id="guide"></canvas></div>
 				<div id="div_map"><canvas id="map"></canvas></div>
+			</div>
+			<div align="center">
+				<form id="node" action="/addpoint" method="post">
+					node type:<input type="text" name="node_type" value="keynode"><br>
+					node name:<input type="text" name="node_num" value="1"><br>
+					cost limit:<input type="text" name="cost_limit" value="10"><br>
+					<input type="button" value="提交" class="btn2" onclick = "check_user();" />
+					<!--input type="submit"-->
+				</form>
 			</div>
 		</div>
 		<footer align="center">

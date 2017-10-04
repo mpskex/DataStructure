@@ -104,6 +104,22 @@ class PathTree(object):
             else:
                 self.ReduceTree(i, dist_matrix, cost_limit, num=num+1)
 
+    #   sort the path tree
+    #   --------------------------------------------
+    #   paras:
+    #       root:   root node of the path tree
+    def SortTree(self, root):
+        for i in root.child[:]:
+            self.SortTree(i)
+        for n in range(len(root.child)):
+            if n == 0:
+                continue
+            for m in range(0, n):
+                if root.child[m].cost > root.child[n].cost:
+                    child.root.insert(m, root.child[n].cost)
+                    del root.child[n+1]
+                    break
+
     #   pre-order traveler
     #   --------------------------------------------
     #   paras:
@@ -120,6 +136,7 @@ class PathTree(object):
     #   paras:
     #       None
     def Print(self):
+        print "------------------Path Tree------------------"
         self.tLR(self.NodeTree)
 
 if __name__ == '__main__':

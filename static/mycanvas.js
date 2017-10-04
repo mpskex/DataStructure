@@ -1,5 +1,40 @@
 var static_path = "static/"
 
+function check_user()
+{
+    var node_type = document.getElementsByName("node_type").value;
+    var node_num = document.getElementsByName("node_num").value;
+
+    if(node_type=="")
+    {
+        alert("Node Type 不能为空！");
+        return false;
+    }
+    else
+    {
+        if(node_num=="")
+        {
+            alert("Node Name 不能为空！");
+            return false;
+        }
+        else
+        {
+            if(node_type=="keynode")
+            {
+                var cost_limit = document.getElementsByName("cost_limit").value;
+                if(cost_limit=="")
+                {
+                    alert("Key Node Cost limit 不能为空！");
+                    return false;
+                }
+            }
+        }
+    }
+    alert
+    document.getElementById("node").submit();
+}
+
+
 function draw_map(ctx)
 {
     var img = new Image();
@@ -8,6 +43,8 @@ function draw_map(ctx)
                 {
                     ctx.drawImage(img, 0, 0);
                 }
+    var w = ctx.width = img.width;
+    var h = ctx.height = img.height;
 }
 
 function draw_guide(ctx)

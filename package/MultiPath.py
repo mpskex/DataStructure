@@ -125,7 +125,10 @@ class MultiPath(object):
                 ptree = PathTree.PathTree(node_dst, way_nodes, node_src)
                 #   Update all cost on each nodes
                 ptree.UpdateCost(ptree.NodeTree, self.singlepath.dist)
+                ptree.Print()
                 ptree.ReduceTree(ptree.NodeTree, self.singlepath.dist, node_dst.cost_limit)
+                ptree.Print()
+                ptree.SortTree(ptree.NodeTree)
                 ptree.Print()
                 macro_path.append(self.__Macro_Path_Out__(ptree.NodeTree, node_src))
                 #   code here
