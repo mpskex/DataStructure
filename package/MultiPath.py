@@ -43,10 +43,20 @@ class MultiPath(object):
     #       time_cost:  time cost this node limited
     def AddKeyPoint(self, point, time_cost):
         #   Add node to keypoints list
-        p = PathTree.TreeNode(point)
+        for n in self.keypoints:
+            if n.data == point:
+                return False
+        #   Invalid time cost
+        if time_cost<=0:
+            return False
+        #   over the map
+        if point > self.singlepath.map_size:
+            return False
+        p = PathTree.TreeNode(int(point))
         p.cost = 0
-        p.cost_limit = time_cost
+        p.cost_limit = int(time_cost)
         self.keypoints.append(p)
+        return True
 
     
     #   Add WayPoint
@@ -56,7 +66,14 @@ class MultiPath(object):
     #       time_cost:  time cost this node limited
     def AddWayPoint(self, point):
         #   Add node to waypoints list
+        for n in self.waypoints:
+            if n.data == point:
+                return False
+        #   over the map
+        if point > self.singlepath.map_size:
+            return False
         self.waypoints.append(PathTree.TreeNode(point))
+        return True
 
         
     #   Output a best Macro-route according current strategy

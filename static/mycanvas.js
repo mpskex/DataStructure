@@ -1,18 +1,18 @@
 var static_path = "static/"
 
-function check_user()
+function check_input()
 {
     var node_type = document.getElementsByName("node_type").value;
     var node_num = document.getElementsByName("node_num").value;
 
-    if(node_type=="")
+    if(node_type=="" || node_type==null)
     {
         alert("Node Type 不能为空！");
         return false;
     }
     else
     {
-        if(node_num=="")
+        if(node_num=="" || node_num == null)
         {
             alert("Node Name 不能为空！");
             return false;

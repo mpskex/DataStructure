@@ -7,6 +7,7 @@
 
 import sqlite3
 from flask import Flask, request, url_for, render_template, make_response
+from flask import abort, redirect
 from package import *
 
 #   Global Variable
@@ -26,7 +27,7 @@ mp = MultiPath.MultiPath("map/map_data.npy")
 
 @app.route('/')
 @app.route('/index', methods = ['POST', 'GET'])
-def helloworld():
+def index():
     if request.method == "GET":
         return render_template('index.html')
     else:
@@ -39,18 +40,38 @@ def AddWayPoint():
     if node_type == 'keynode':
         node_num = request.form.get('node_num')
         cost_limit = request.form.get('cost_limit')
-        mp.AddKeyPoint(int(node_num), int(cost_limit))
-        print "Add Key Node ", node_num, " cost limit: ", cost_limit
-        resp = make_response(render_template('index.html'))
-        return resp
+        if not (node_num.isdigit() and cost_limit.isdigit()):
+            abort(501)
+        if mp.AddKeyPoint(int(node_num), int(cost_limit)):
+            print "Add Key Node ", node_num, " cost limit: ", cost_limit
+            return redirect(url_for('index'))
+        else:
+            abort(501)
     elif node_type == 'waynode':
         node_num = request.form.get('node_num')
-        mp.AddWayPoint(int(node_num))
-        print "Add Way Node ", node_num
-        resp = make_response(render_template('index.html'))
-        return resp
+        if not node_num.isdigit():
+            abort(501)
+        if mp.AddWayPoint(int(node_num)):
+            print "Add Way Node ", node_num
+            resp = make_response(render_template('index.html'))
+            return redirect(url_for('index'))
+        else:
+            abort(501)
     else:
-        return make_response(render_template('error.html'))
+        abort(502)
+
+@app.errorhandler(400)
+def page_not_found(error):
+    return render_template('error.html', resp)
+
+@app.errorhandler(501)
+def internal_error(error):
+    return render_template('error.html', resp_code='501', error_message="Failed to create the point!!>_<", \
+    reason='perhaps you input the point repeatly, you just input invalid attributes!'), 501
+
+@app.errorhandler(502)
+def internal_error(error):
+    return render_template('error.html', resp_code='502', error_message="Incomplete input!!>_<"), 502
 
 def connect_db():
     return sqlite3.connect(DATABASE)
