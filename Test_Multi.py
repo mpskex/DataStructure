@@ -13,4 +13,5 @@ if __name__ == '__main__':
     #g.AddKeyPoint(4, 15)
     g.AddWayPoint(1)
     g.AddWayPoint(3)
+    g.PrintStatus()
     print "Final result:\t", g.CalcMultiPath(0)

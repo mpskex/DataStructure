@@ -36,6 +36,14 @@ class MultiPath(object):
         self.waypoints = []
         self.INFINITE = 9999
 
+    def PrintStatus(self):
+        print "KeyPoints:"
+        for n in self.keypoints:
+            print "\t", n.data, "\n\tcost : ", n.cost, "\n\tcost limit : ", n.cost_limit
+        print "WayPoints:"
+        for n in self.waypoints:
+            print "\t", n.data, "\n\tcost : ", n.cost
+
     #   Add KeyPoint
     #   --------------------------------------------
     #   paras:
@@ -43,6 +51,10 @@ class MultiPath(object):
     #       time_cost:  time cost this node limited
     def AddKeyPoint(self, point, time_cost):
         #   Add node to keypoints list
+        #   check if the point is in the waypoint list or keypoint list
+        for n in self.waypoints:
+            if n.data == point:
+                return False
         for n in self.keypoints:
             if n.data == point:
                 return False
@@ -66,7 +78,11 @@ class MultiPath(object):
     #       time_cost:  time cost this node limited
     def AddWayPoint(self, point):
         #   Add node to waypoints list
+        #   check if the point is in the waypoint list or keypoint list
         for n in self.waypoints:
+            if n.data == point:
+                return False
+        for n in self.keypoints:
             if n.data == point:
                 return False
         #   over the map
@@ -82,7 +98,7 @@ class MultiPath(object):
     #   paras:
     #       root:       root node of PathTree
     #       lastleaf:   last leaf node in PathTree
-    def __Macro_Path_Out__(self, root, lastleaf):
+    def __Macro_Path_Out__(self, root, lastleaf, way_nodes):
         #   current strategy is to select first path
         min = self.singlepath.INFINITE
         node_cur = root
@@ -92,6 +108,11 @@ class MultiPath(object):
             temp_path.insert(0, node_cur.data)
             node_last = node_cur
             node_cur = node_cur.child[0]
+            #   check if the waypoint is included by the macro path
+            for n in range(len(way_nodes)):
+                if node_cur.data == way_nodes[n].data:
+                    print "[!]Repeated[!] ", way_nodes[n].data
+                    del way_nodes[n]
         temp_path.insert(0, node_cur.data)
         temp_path.insert(0, lastleaf.data)
         return temp_path
@@ -147,7 +168,7 @@ class MultiPath(object):
                 ptree.Print()
                 ptree.SortTree(ptree.NodeTree)
                 ptree.Print()
-                macro_path.append(self.__Macro_Path_Out__(ptree.NodeTree, node_src))
+                macro_path.append(self.__Macro_Path_Out__(ptree.NodeTree, node_src, way_nodes))
                 #   code here
                 del key_nodes[0]
 
@@ -157,6 +178,10 @@ class MultiPath(object):
                 #   Choose the nearest way point from the last key point
                 node_src = key_nodes[0]
                 node_cur = node_src
+                print "[!]  Remained way point : "
+                for i in way_nodes:
+                    print "\t\t", i.data
+                print "\t from key point : ", node_src.data
                 temp_path = [key_nodes[0].data]
                 temp_min_node_num = 0
                 temp_min_dist = self.INFINITE
@@ -203,4 +228,5 @@ if __name__ == '__main__':
     #g.AddKeyPoint(4, 15)
     g.AddWayPoint(1)
     g.AddWayPoint(3)
+    g.PrintStatus()
     print "Final result:\t", g.CalcMultiPath(0)
