@@ -1,6 +1,51 @@
 @charset "UTF-8";
 
-body{background:#000 url(bg.jpg) repeat 0 0 fixed } 
-canvas { border: 1px solid black; }
-#div_cav{position: relative;}  
-#div_guide{position: absolute;}
+.top {
+    position: absolute;
+    left: 0; right: 0;
+    height: 72px;
+}
+.textbar{
+    position: relative;
+    height: 24px;
+}
+.sidebar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 178px;
+}
+.sidebar_bgc{
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 178px;
+    background: #72ffff;
+    filter: alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;
+}
+.sidebar_element
+{
+    text-align: center;
+    position: relative;
+    width: 178px; height: 36px;
+    margin: 0;
+}
+.content {
+    position: absolute;
+    left:178px; top: 0; right: 0; bottom: 0;
+}
+.content_bgc{
+    position: absolute;
+    bottom: 0; right: 0;
+    background: #72ffff;
+    filter: alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;
+}
+.footer{
+    position: relative;
+}
+.map_holder{
+    position: relative; 
+    bottom: 0; right: 0;
+}
+.input_box{
+    position: relative;
+    height: 72px; width: 600px;
+}
