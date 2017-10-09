@@ -2,36 +2,43 @@ var static_path = "static/"
 
 function check_input()
 {
-    var node_type = document.getElementsByName("node_type").value;
-    var node_num = document.getElementsByName("node_num").value;
+    var node_type = document.getElementById("node_type").value;
+    var node_num = document.getElementById("node_num").value;
 
-    if(node_type=="")
+    if(node_type!="keynode" && node_type!="waynode")
     {
-        alert("Node Type 不能为空！");
+        alert("Node Type 非法！");
         return false;
     }
     else
     {
-        if(node_num=="")
+        if(isNaN(parseInt(node_num,10)))
         {
-            alert("Node Name 不能为空！");
+            alert("Node Name 非法\n" + node_num);
             return false;
         }
         else
         {
+            var cost_limit = document.getElementById("cost_limit").value;
             if(node_type=="keynode")
             {
-                var cost_limit = document.getElementsByName("cost_limit").value;
-                if(cost_limit=="")
+                if(isNaN(parseInt(cost_limit,10)))
                 {
-                    alert("Key Node Cost limit 不能为空！");
+                    alert("Key Node Cost limit 非法！");
+                    return false;
+                }
+            }
+            else if(node_type=="waynode")
+            {
+                if(cost_limit!=NULL && cost_limit!="")
+                {
+                    alert("Key Node Cost limit 不为空！");
                     return false;
                 }
             }
         }
     }
-    alert
-    document.getElementById("node").submit();
+    document.getElementById("nform").submit();
 }
 
 
