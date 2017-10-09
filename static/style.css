@@ -14,12 +14,22 @@
     left: 0; top: 0; bottom: 0;
     width: 178px;
 }
+.loginbar{
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    z-index: 1000;
+}
 .sidebar_bgc{
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 178px;
     background: #72ffff;
     filter: alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;
+}
+.option{
+    position: absolute;
+    width: 178px; height:96px;
+    z-index: 1002;
 }
 .sidebar_element
 {
@@ -44,6 +54,11 @@
 .map_holder{
     position: relative; 
     bottom: 0; right: 0;
+}
+.map_mask{
+    position: absolute;
+    bottom: 0; right: 0;
+    z-index: 1001;
 }
 .node_holder{
     position: absolute;

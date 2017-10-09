@@ -12,18 +12,15 @@
 </head>
 <body>
 	<div>
-		<div class="option" id="option" hidden>
-			<img src="{{ url_for('static', filename='designater.png')}}">
-		</div>
 		<div class="content">
 			<div class="loginbar" align="right">
-				<input type="button" value="Login" class="btn2" onclick="window.location.href='login';"/>
 			</div>
-			<div class="map_mask">
+			<div class="map_mask" onclick="GetMousePos();">
+
 			</div>
 			<div class="map_holder" id="div_map">
 				<img src="{{url_for('static', filename='map.png')}}">
-				<svg id="node" class="node_holder" xmlns="http://www.w3.org/2000/svg" version="1.1" width=907 height=622>
+				<svg id="node" class="node_holder" xmlns="http://www.w3.org/2000/svg" version="1.1" onclick="GetMousePos();" width=907 height=622>
 					<defs>
 						<filter id="Gaussian_Blur">
 						<feGaussianBlur in="SourceGraphic" stdDeviation="0.7" />
@@ -34,14 +31,6 @@
 					L377 139 377 163 406 163"
 					style="fill:transparent;stroke:blue;stroke-width:4;filter:url(#Gaussian_Blur)"/>
 				</svg>
-			</div>
-			<div align="center">
-				<form id="nform" action="/addpoint" method="post">
-					node type:<input type="text" name="node_type"  id="node_type" value="keynode"><br>
-					node name:<input type="text" name="node_num"  id="node_num" value="1"><br>
-					cost limit:<input type="text" name="cost_limit" id="cost_limit" value="10"><br>
-					<input type="button" value="提交" class="btn2" onclick = "CheckInput();" />
-				</form>
 			</div>
 		</div>
 		<div class="sidebar_bgc">

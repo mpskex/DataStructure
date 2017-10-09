@@ -60,6 +60,14 @@ def AddWayPoint():
     else:
         abort(502)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 @app.errorhandler(400)
 def page_not_found(error):
     return render_template('error.html', resp)
@@ -67,7 +75,7 @@ def page_not_found(error):
 @app.errorhandler(501)
 def internal_error(error):
     return render_template('error.html', resp_code='501', error_message="Failed to create the point!!>_<", \
-    reason='perhaps you input the point repeatly, you just input invalid attributes!'), 501
+    reason='perhaps you input the point repeatly!'), 501
 
 @app.errorhandler(502)
 def internal_error(error):
