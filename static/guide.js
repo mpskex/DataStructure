@@ -59,24 +59,7 @@ function draw_guide(ctx)
 
 function draw()
 {
-    var map_canv = document.getElementById("map");
-    var guide_canv = document.getElementById("guide");
-    var w = map_canv.width = guide_canv.width = window.innerWidth;
-    var h = map_canv.height = guide_canv.height = window.innerHeight;
-    if (map_canv.getContext)
-    {
-        var map_ctx = map_canv.getContext('2d');
-        var guide_ctx = guide_canv.getContext('2d');
-        //var w = c.width = window.innerWidth;
-        //var h = c.height = window.innerHeight;
-
-        // drawing code here
-        draw_map(map_ctx);
-        draw_guide(guide_ctx);
-    }
-    else
-    {
-        // canvas-unsupported code here
-        alert("网页不支持HTML5，请更换Chrome、Safari等浏览器")
-    }
+    var node = document.getElementById("node");
+    var w = node.width = window.innerWidth;
+    var h = node.height = window.innerHeight;
 }

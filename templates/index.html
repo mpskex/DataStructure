@@ -6,37 +6,41 @@
 	<style type="text/css" media="screen">
 		@import url("{{ url_for('static', filename='style.css')}}");
 	</style>
-	<script type="application/javascript" src = "{{url_for('static', filename='guide.js')}}")></script>
+	<script type="application/javascript" src="{{url_for('static', filename='guide.js')}}")></script>
 </head>
 <body>
-		<div>
-			<div class="content">
-				<div class="content_bgc"></div>
-				<div class="map_holder" id="div_map">
-						<img src="{{url_for('static', filename='map.png')}}">
-				</div>
-				<div align="center">
-						<form id="node" action="/addpoint" method="post">
-							node type:<input type="text" name="node_type" value="keynode"><br>
-							node name:<input type="text" name="node_num" value="1"><br>
-							cost limit:<input type="text" name="cost_limit" value="10"><br>
-							<input type="button" value="提交" class="btn2" onclick = "check_input();" />
-						</form>
-					</div>
+	<div>
+		<div class="content">
+			<div class="content_bgc"></div>
+			<div class="map_holder" id="div_map">
+				<img src="{{url_for('static', filename='map.png')}}">
+				<svg id="node" class="node_holder" xmlns="http://www.w3.org/2000/svg" version="1.1" width=907 height=622>
+					<polygon points="100,10 40,180 190,60 10,60 780,380"
+					style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
+				</svg>
 			</div>
-			<div class="sidebar_bgc">
-			</div>
-			<div class="sidebar">
-				<div class="sidebar_element">
-					已经添加的点
-				</div>
-				<div class="sidebar_element">
-					a
-				</div>
-				<div class="sidebar_element">
-					a
-				</div>
+			<div align="center">
+				<form id="node" action="/addpoint" method="post">
+					node type:<input type="text" name="node_type" value="keynode"><br>
+					node name:<input type="text" name="node_num" value="1"><br>
+					cost limit:<input type="text" name="cost_limit" value="10"><br>
+					<input type="button" value="提交" class="btn2" onclick = "check_input();" />
+				</form>
 			</div>
 		</div>
-	</body>
+		<div class="sidebar_bgc">
+		</div>
+		<div class="sidebar">
+			<div class="sidebar_element">
+				已经添加的点
+			</div>
+			<div class="sidebar_element">
+				a
+			</div>
+			<div class="sidebar_element">
+				a
+			</div>
+		</div>
+	</div>
+</body>
 </html>

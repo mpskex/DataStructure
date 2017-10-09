@@ -45,6 +45,11 @@
     position: relative; 
     bottom: 0; right: 0;
 }
+.node_holder{
+    position: absolute;
+    left: 0; top: 0; right: 0; bottom: 0;
+    z-index: 1000;
+}
 .input_box{
     position: relative;
     height: 72px; width: 600px;
