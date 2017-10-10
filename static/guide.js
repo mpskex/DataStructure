@@ -12,11 +12,30 @@ var point_name = new Array(
     "礼堂",
     "图书馆"
 );
+var static_path = "static/"
 //  当前点
 var cur_point = -1;
 
 window.onload=function(){
-    var static_path = "static/"
+    //  绘制路径点
+    var svg = document.getElementById("node");
+    if(svg){
+        for(var i=0;i<point_on_map.length;i++)
+        {
+            var p = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            if(p){
+                p.setAttribute("cx", ""+point_on_map[i][0]);
+                p.setAttribute("cy", ""+point_on_map[i][1]);
+                p.setAttribute("r", "4");
+                p.setAttribute("stroke", "blue");
+                p.setAttribute("stroke-width", "1");
+                p.setAttribute("fill-opacity", "0")
+                p.setAttribute("filter", "Gaussian_Blur");
+                svg.appendChild(p);
+            }
+        }
+    }
+
     var menu = document.getElementById("option");
     var map = document.getElementById("map_holder");
     
@@ -54,6 +73,18 @@ window.onload=function(){
         //  阻止浏览器默认事件
         return false;
     }
+    document.getElementById("opt_btn_add").onmouseover = function(e){
+        document.getElementById("opt_btn_add").style.background = "#7869c3";
+    }
+    document.getElementById("opt_btn_add").onmouseout = function(e){
+        document.getElementById("opt_btn_add").style.background = "#8f8f8f";
+    }
+    document.getElementById("opt_btn_rm").onmouseover = function(e){
+        document.getElementById("opt_btn_rm").style.background = "#7869c3";
+    }
+    document.getElementById("opt_btn_rm").onmouseout = function(e){
+        document.getElementById("opt_btn_rm").style.background = "#8f8f8f";
+    }
     document.onclick = function(e){
         var e = e || window.event;
         menu.style.display = "none"
@@ -72,6 +103,8 @@ function CheckInput()
 
     var node_type = document.getElementById("ptype").value;
     var node_num = cur_point;
+
+    document.getElementById("option").style.display = "none";
 
     if(cur_point==-1)
     {
@@ -118,8 +151,32 @@ function CheckInput()
     }
     document.getElementById("option").style.display = "none";
     document.getElementById("nform").submit();
+    //AddPointToSidebar(node_num, node_type, cost_limit);
 }
 
+function AddPointToSidebar(num, type, limit)
+{
+    var elem = document.createElement("div");
+    elem.setAttribute("class", "sidebar_element");
+    elem.setAttribute("style", "font-size:12px");
+    str = point_name[num];
+    if(type=="keynode")
+    {
+        str += "带时间限制的路径点";
+        str += "<br>";
+        str += "限制：";
+        str += limit;
+    }
+    else if(type=="waynode")
+    {
+        str += "普通路径点";
+        str += "<br>";
+        str += "限制：";
+        str += "无";
+    }
+    elem.appendChild(document.createTextNode(str));
+    document.getElementById("sidebar").appendChild(elem);
+}
 
 function GetMousePos()
 {
@@ -138,18 +195,6 @@ function GetLimitValue()
     var l = document.getElementById("plimit");
     var d = document.getElementById("plimit_value");
     d.innerHTML = l.value;
-}
-
-function draw_map(ctx)
-{
-    var img = new Image();
-    img.src = static_path + "map.png";
-    img.onload = function()
-                {
-                    ctx.drawImage(img, 0, 0);
-                }
-    var w = ctx.width = img.width;
-    var h = ctx.height = img.height;
 }
 
 function draw_guide(ctx)

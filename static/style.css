@@ -86,7 +86,7 @@
 .option .opt_button{
     position: relative;
     float: left;
-    background: rgb(160, 160, 160);
+    background: #8f8f8f;
     width: 80px; height: 30px;
     font-size: 14px;
     font-weight: 700;

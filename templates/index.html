@@ -28,7 +28,7 @@
 			</div>
 			<div>
 				<div class="opt_button" id="opt_btn_add"><div style="padding: 4px 4px 4px 20px" onclick = "CheckInput();">添加</div></div>
-				<div class="opt_button" id="opt_btn_rm"><div style="padding: 4px 4px 4px 20px" onclick = "window.location.href='removeall'">删除</div></div>
+				<div class="opt_button" id="opt_btn_rm"><div style="padding: 4px 4px 4px 20px" onclick = "window.location.href='removeall';alert('已经清空所有输入！');">删除</div></div>
 			</div>
 		</ul>
 		<div class="content">
@@ -62,16 +62,11 @@
 		</div>
 		<div class="sidebar_bgc">
 		</div>
-		<div class="sidebar">
-			<div class="sidebar_element">
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar_element" style="background:#5c5c5c;color:white;">
 				已经添加的点
 			</div>
-			<div class="sidebar_element">
-				a
-			</div>
-			<div class="sidebar_element">
-				a
-			</div>
+			{{ nodes|safe }}
 		</div>
 	</div>
 </body>
