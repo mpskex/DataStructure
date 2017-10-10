@@ -28,12 +28,13 @@
 			</div>
 			<div>
 				<div class="opt_button" id="opt_btn_add"><div style="padding: 4px 4px 4px 20px" onclick = "CheckInput();">添加</div></div>
-				<div class="opt_button" id="opt_btn_rm"><div style="padding: 4px 4px 4px 20px" onclick = "window.location.href='removeall';alert('已经清空所有输入！');">删除</div></div>
+				<div class="opt_button" id="opt_btn_rm"><div style="padding: 4px 4px 4px 20px" onclick = "RemovePoint();">删除</div></div>
 			</div>
 		</ul>
 		<div class="content">
 			<div class="loginbar" align="right">
 				<input type="button" value="Login" class="btn2" onclick="window.location.href='login';"/>
+				<input type="button" value="Clear" class="btn2" onclick="window.location.href='removeall';alert('已经清空所有输入！');"/>
 			</div>
 			<div class="map_mask">
 			</div>
@@ -57,6 +58,9 @@
 					<input type="text" name="node_num" id="node_num" value="1"><br>
 					<input type="text" name="cost_limit" id="cost_limit" value="10"><br>
 					<input type="button" value="提交" class="btn2" onclick = "CheckInput();" />
+				</form>
+				<form id="rform" action="/remove" method="post" hidden>
+					<input type="text" name="node_num_r" id="node_num_r" value="-1"><br>
 				</form>
 			</div>
 		</div>

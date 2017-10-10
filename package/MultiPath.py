@@ -39,6 +39,19 @@ class MultiPath(object):
     def RemovePoints(self):
         self.keypoints = []
         self.waypoints = []
+    
+    def RemovePoint(self, num):
+        print "Removing ", num, " node"
+        for n in range(len(self.keypoints)):
+            if num == self.keypoints[n].data:
+                del self.keypoints[n]
+                return True
+        for n in range(len(self.waypoints)):
+            if num == self.waypoints[n].data:
+                del self.waypoints[n]
+                return True
+        print "[!]Remove Failed!"
+        return False
 
     def PrintStatus(self):
         print "KeyPoints:"

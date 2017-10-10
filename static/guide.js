@@ -154,28 +154,10 @@ function CheckInput()
     //AddPointToSidebar(node_num, node_type, cost_limit);
 }
 
-function AddPointToSidebar(num, type, limit)
+function RemovePoint()
 {
-    var elem = document.createElement("div");
-    elem.setAttribute("class", "sidebar_element");
-    elem.setAttribute("style", "font-size:12px");
-    str = point_name[num];
-    if(type=="keynode")
-    {
-        str += "带时间限制的路径点";
-        str += "<br>";
-        str += "限制：";
-        str += limit;
-    }
-    else if(type=="waynode")
-    {
-        str += "普通路径点";
-        str += "<br>";
-        str += "限制：";
-        str += "无";
-    }
-    elem.appendChild(document.createTextNode(str));
-    document.getElementById("sidebar").appendChild(elem);
+    document.getElementById("node_num_r").value = cur_point;
+    document.getElementById("rform").submit();
 }
 
 function GetMousePos()
