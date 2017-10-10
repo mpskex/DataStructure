@@ -34,9 +34,18 @@ def index():
         print "wrong method"
         return make_response('Error')
 
+@app.route('/removeall', methods = ['GET'])
+def RemoveAll():
+    mp.RemovePoints()
+    print "[!]Cleared all points"
+    return redirect(url_for('index'))
+
 @app.route('/addpoint', methods = ['POST'])
 def AddWayPoint():
     node_type = request.form.get('node_type')
+    print "[*]Recieved Post"
+    print "\tPosted Node Number is : ", request.form.get('node_num')
+    print "\tPosted Node Cost Limit is : ", request.form.get('cost_limit')
     if node_type == 'keynode':
         node_num = request.form.get('node_num')
         cost_limit = request.form.get('cost_limit')

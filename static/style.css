@@ -5,39 +5,95 @@
     left: 0; right: 0;
     height: 72px;
 }
+.input_box{
+    position: relative;
+    height: 72px; width: 600px;
+}
 .textbar{
     position: relative;
-    height: 24px;
+    width: 48px; height: 24px;
 }
-.sidebar {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 178px;
-}
+/*
+    输入框 板块
+*/
 .loginbar{
     position: absolute;
     top: 0; right: 0; left: 0;
     z-index: 1000;
 }
+/*
+    sidebar 侧边栏
+*/
+.sidebar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    box-shadow: -2px 0px 30px 0px #555555 inset;
+    width: 178px;
+}
 .sidebar_bgc{
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 178px;
-    background: #72ffff;
+    background: #727272;
     filter: alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;
-}
-.option{
-    position: absolute;
-    width: 178px; height:96px;
-    z-index: 1002;
 }
 .sidebar_element
 {
     text-align: center;
     position: relative;
+    border-bottom: 1px solid #CCC;
     width: 178px; height: 36px;
     margin: 0;
 }
+/*
+    Option 下拉菜单
+*/
+.option{
+    position: absolute;
+    width: 160px; height: 200px;
+    background: white;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 10px 10px 10px #6d6d6d;
+    z-index: 1002;
+    -webkit-padding-start: 0px;
+}
+.option .opt_element{
+    position: relative;
+    display: block;
+	padding: 4px 4px 4px 20px;
+	color: #4D4D4D;
+	font-size: 14px;
+	font-weight: 700;
+	border-bottom: 1px solid #CCC;
+	-webkit-transition: all 0.4s ease;
+	-o-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+.option .opt_attribute{
+    display: block;
+    width: 90px;
+	padding: 4px 4px 4px 20px;
+	color: #4D4D4D;
+	font-size: 14px;
+	font-weight: 700;
+	position: relative;
+	-webkit-transition: all 0.4s ease;
+	-o-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+.option .opt_button{
+    position: relative;
+    float: left;
+    background: rgb(160, 160, 160);
+    width: 80px; height: 30px;
+    font-size: 14px;
+    font-weight: 700;
+}
+/*
+    content 主体内容
+*/
 .content {
     position: absolute;
     left:178px; top: 0; right: 0; bottom: 0;
@@ -48,10 +104,11 @@
     background: #72ffff;
     filter: alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;
 }
-.footer{
-    position: relative;
-}
+/*
+map 地图
+*/
 .map_holder{
+    cursor: pointer;
     position: relative; 
     bottom: 0; right: 0;
 }
@@ -60,12 +117,14 @@
     bottom: 0; right: 0;
     z-index: 1001;
 }
+/*
+    svg 路径 样式
+*/
 .node_holder{
     position: absolute;
     left: 0; top: 0; right: 0; bottom: 0;
     z-index: 1000;
 }
-.input_box{
+.footer{
     position: relative;
-    height: 72px; width: 600px;
 }

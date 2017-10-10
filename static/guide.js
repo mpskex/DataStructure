@@ -1,17 +1,58 @@
+//  全局变量 描述关键点集
+var point_on_map = new Array(
+    //  宿舍
+    Array(491, 99), 
+    //  礼堂
+    Array(406, 163),
+    //  图书馆
+    Array(377, 139)
+);
+var point_name = new Array(
+    "宿舍",
+    "礼堂",
+    "图书馆"
+);
+//  当前点
+var cur_point = -1;
+
 window.onload=function(){
     var static_path = "static/"
     var menu = document.getElementById("option");
-    document.oncontextmenu = function(e) {
+    var map = document.getElementById("map_holder");
+    
+    map.oncontextmenu = function(e) {
+        //  初始化值
+        document.getElementById("plimit").value=0;
         var e = e || window.event;
-        //鼠标点的坐标
-        var oX = e.clientX;
-        var oY = e.clientY;
-        //菜单出现后的位置
+        //  鼠标点的坐标
+        var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+        var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+        var x = e.pageX || e.clientX + scrollX;
+        var y = e.pageY || e.clientY + scrollY;
+        //  菜单出现后的位置
         menu.style.display = "block";
-        menu.style.left = oX + "px";
-        menu.style.top = oY + "px";
-        //阻止浏览器默认事件
-        return false;//一般点击右键会出现浏览器默认的右键菜单，写了这句代码就可以阻止该默认事件。
+        menu.style.left = x + "px";
+        menu.style.top = y + "px";
+        //  地图坐标修正
+        var map_x = x - 178;
+        var map_y = y;
+        for(var i=0; i<point_on_map.length;i++)
+        {
+            if(Math.abs(map_x-point_on_map[i][0])<10
+            && Math.abs(map_y-point_on_map[i][1])<10)
+            {
+                document.getElementById("pname").innerHTML = point_name[i];
+                cur_point = i;
+                break;
+            }
+            else
+            {
+                document.getElementById("pname").innerHTML = "None";
+                cur_point = -1;
+            }
+        }
+        //  阻止浏览器默认事件
+        return false;
     }
     document.onclick = function(e){
         var e = e || window.event;
@@ -25,8 +66,18 @@ window.onload=function(){
 
 function CheckInput()
 {
-    var node_type = document.getElementById("node_type").value;
-    var node_num = document.getElementById("node_num").value;
+    document.getElementById("node_num").value = cur_point;
+    document.getElementById("node_type").value = document.getElementById("ptype").value;
+    document.getElementById("cost_limit").value = document.getElementById("plimit").value;
+
+    var node_type = document.getElementById("ptype").value;
+    var node_num = cur_point;
+
+    if(cur_point==-1)
+    {
+        alert("没有选中任何点");
+        return false;
+    }
 
     if(node_type!="keynode" && node_type!="waynode")
     {
@@ -50,17 +101,22 @@ function CheckInput()
                     alert("Key Node Cost limit 非法！");
                     return false;
                 }
+                else
+                {
+                    if(cost_limit=="0")
+                    {
+                        alert("Key Node doesn't allow zero value!!");
+                        return false;
+                    }
+                }
             }
             else if(node_type=="waynode")
             {
-                if(cost_limit!=NULL && cost_limit!="")
-                {
-                    alert("Key Node Cost limit 不为空！");
-                    return false;
-                }
+
             }
         }
     }
+    document.getElementById("option").style.display = "none";
     document.getElementById("nform").submit();
 }
 
@@ -75,6 +131,13 @@ function GetMousePos()
     //  sub the side bar width
     x -= 178;
     alert("X: " + x + "\nY: " + y);
+}
+
+function GetLimitValue()
+{
+    var l = document.getElementById("plimit");
+    var d = document.getElementById("plimit_value");
+    d.innerHTML = l.value;
 }
 
 function draw_map(ctx)

@@ -36,6 +36,10 @@ class MultiPath(object):
         self.waypoints = []
         self.INFINITE = 9999
 
+    def RemovePoints(self):
+        self.keypoints = []
+        self.waypoints = []
+
     def PrintStatus(self):
         print "KeyPoints:"
         for n in self.keypoints:

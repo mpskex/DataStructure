@@ -3,25 +3,41 @@
 <head>
 	<meta charset="UTF-8">
 	<title>地图导航</title>
-	<style type="text/css" media="screen">
-		@import url("{{ url_for('static', filename='style.css')}}");
-	</style>
+	<!--部署版本-->
+	<!--style type="text/css" media="screen">@import url("{{ url_for('static', filename='style.css')}}");</style-->
+	<!--script type='text/javascript' src="{{ url_for('static', filename='guide.js')}}"></script-->
 	<script type="application/javascript">
-		document.write("<script type='text/javascript' src='" + "{{ url_for('static', filename='guide.js')}}" + "?" + Math.floor(Math.random()*1000000) + "'><" + "/script>"); 
+		document.write("<script type='text/javascript' src='"+"{{ url_for('static', filename='guide.js')}}" + "?" + Math.floor(Math.random()*1000000) + "'><" + "/script>"); 
+		document.write("<style type='text/css' media='screen'>@import url("+"{{ url_for('static', filename='style.css')}}" + "?" + Math.floor(Math.random()*1000000) + ");</style>"); 
 	</script>
 </head>
 <body>
 	<div>
-		<div class="option" id="option" hidden>
-			<img src="{{ url_for('static', filename='designater.png')}}">
-		</div>
+		<ul class="option" id="option" hidden align="left">
+			<div class="opt_element"><i class="point name"></i>名字<div class="opt_attribute" id="pname">None</div></div>
+			<div class="opt_element">
+				<i class="point type"></i>类型
+				<select id="ptype"> 
+					<option value="keynode">带时间限制的路径点</option> 
+					<option value="waynode">普通路径点</option> 
+				</select> 
+			</div>
+			<div class="opt_element"><i class="point limit"></i>限制
+				<div id="plimit_value" style="float: right;"></div>
+				<input type="range" id="plimit" min="0" max="100" onmouseup="GetLimitValue();"/>
+			</div>
+			<div>
+				<div class="opt_button" id="opt_btn_add"><div style="padding: 4px 4px 4px 20px" onclick = "CheckInput();">添加</div></div>
+				<div class="opt_button" id="opt_btn_rm"><div style="padding: 4px 4px 4px 20px" onclick = "window.location.href='removeall'">删除</div></div>
+			</div>
+		</ul>
 		<div class="content">
 			<div class="loginbar" align="right">
 				<input type="button" value="Login" class="btn2" onclick="window.location.href='login';"/>
 			</div>
 			<div class="map_mask">
 			</div>
-			<div class="map_holder" id="div_map">
+			<div class="map_holder" id="map_holder">
 				<img src="{{url_for('static', filename='map.png')}}">
 				<svg id="node" class="node_holder" xmlns="http://www.w3.org/2000/svg" version="1.1" width=907 height=622>
 					<defs>
@@ -36,10 +52,10 @@
 				</svg>
 			</div>
 			<div align="center">
-				<form id="nform" action="/addpoint" method="post">
-					node type:<input type="text" name="node_type"  id="node_type" value="keynode"><br>
-					node name:<input type="text" name="node_num"  id="node_num" value="1"><br>
-					cost limit:<input type="text" name="cost_limit" id="cost_limit" value="10"><br>
+				<form id="nform" action="/addpoint" method="post" hidden>
+					<input type="text" name="node_type" id="node_type" value="keynode"><br>
+					<input type="text" name="node_num" id="node_num" value="1"><br>
+					<input type="text" name="cost_limit" id="cost_limit" value="10"><br>
 					<input type="button" value="提交" class="btn2" onclick = "CheckInput();" />
 				</form>
 			</div>
