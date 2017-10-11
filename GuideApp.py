@@ -42,7 +42,7 @@ def index():
 		print "wrong method"
 		return make_response('Error')
 
-@app.route('/remove', methods = ['POST', 'GET'])
+@app.route('/remove', methods = ['POST'])
 def Remove():
 	if request.method == 'POST':
 		num = request.form.get('node_num_r')
@@ -52,12 +52,12 @@ def Remove():
 		for n in range(len(node_str)):
 			if node_str[n][0] == num:
 				del node_str[n]
+				#	注意要break！不然range会超
+				break
 		s = ""
 		for n in node_str:
 			s += n[1]
 		print node_str
-		return render_template('index.html', nodes=s)
-	else:
 		return redirect(url_for('index'))
 
 @app.route('/removeall', methods = ['GET'])
@@ -65,11 +65,7 @@ def RemoveAll():
 	mp.RemovePoints()
 	node_str[:]=[]
 	print "[!]Cleared all points"
-	s = ""
-	for n in node_str:
-		s += n[1]
-	print node_str
-	return render_template('index.html', nodes=s)
+	return redirect(url_for('index'))
 
 @app.route('/addpoint', methods = ['POST','GET'])
 def AddWayPoint():
@@ -90,7 +86,7 @@ def AddWayPoint():
 				for n in node_str:
 					s += n[1]
 				print node_str
-				return render_template('index.html', nodes=s)
+				return redirect(url_for('index'))
 			else:
 				abort(501)
 		elif node_type == 'waynode':
@@ -105,7 +101,7 @@ def AddWayPoint():
 				for n in node_str:
 					s += n[1]
 				print node_str
-				return render_template('index.html', nodes=s)
+				return redirect(url_for('index'))
 			else:
 				abort(501)
 		else:
