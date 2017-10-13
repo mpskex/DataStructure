@@ -2,15 +2,33 @@
 var point_on_map = new Array(
     //  宿舍
     Array(491, 99), 
-    //  礼堂
-    Array(406, 163),
+    //  美食园
+    Array(418, 412),
     //  图书馆
-    Array(377, 139)
+    Array(377, 139),
+    //  逸夫图书馆
+    Array(329, 305),
+    //  科学楼
+    Array(331, 493),
+    //  信息楼
+    Array(243, 355),
+    //  人文楼
+    Array(420, 540),
+    //  软件楼
+    Array(712, 428),
+    //  奥运场馆
+    Array(495, 515)
 );
 var point_name = new Array(
     "宿舍",
-    "礼堂",
-    "图书馆"
+    "美食园",
+    "图书馆",
+    "逸夫图书馆",
+    "科学楼",
+    "信息楼",
+    "人文楼",
+    "软件楼",
+    "奥运场馆"
 );
 var static_path = "static/"
 //  当前点
@@ -27,8 +45,8 @@ window.onload=function(){
                 p.setAttribute("cx", ""+point_on_map[i][0]);
                 p.setAttribute("cy", ""+point_on_map[i][1]);
                 p.setAttribute("r", "4");
-                p.setAttribute("stroke", "blue");
-                p.setAttribute("stroke-width", "1");
+                p.setAttribute("stroke", "red");
+                p.setAttribute("stroke-width", "3");
                 p.setAttribute("fill-opacity", "0")
                 p.setAttribute("filter", "Gaussian_Blur");
                 svg.appendChild(p);

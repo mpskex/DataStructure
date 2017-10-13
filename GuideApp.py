@@ -16,9 +16,17 @@ DATABASE = 'database.db'
 #   Initialize the objects
 app = Flask(__name__)
 mp = MultiPath.MultiPath("map/map_data.npy")
-point_name=[u'宿舍', 
-	u'礼堂', 
-	u'图书馆']
+point_name=[
+    u'宿舍',
+    u'美食园',
+    u'图书馆',
+    u'逸夫图书馆',
+    u'科学楼',
+    u'信息楼',
+    u'人文楼',
+    u'软件楼',
+    u'奥运场馆'
+	]
 node_str = []
 
 #url_for('static', filename='style.css')
@@ -32,7 +40,7 @@ node_str = []
 @app.route('/')
 @app.route('/index', methods = ['POST', 'GET'])
 def index():
-	if request.method == "GET":
+	if request.method == 'GET':
 		s = ""
 		for n in node_str:
 			s += n[1]
