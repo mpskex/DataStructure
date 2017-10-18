@@ -15,7 +15,7 @@ DATABASE = 'database.db'
 
 #   Initialize the objects
 app = Flask(__name__)
-mp = MultiPath.MultiPath("map/map_data.npy")
+mp = MultiPath.MultiPath(["map/map_data.npy"])
 point_name=[
     u'宿舍',
     u'美食园',

@@ -28,9 +28,11 @@ class MultiPath(object):
     #   --------------------------------------------
     #   paras:
     #       map_path:   path to map data
-    def __init__(self, map_path):
+    def __init__(self, map_path_list):
         #   create single path control path
-        self.singlepath = SinglePath.SinglePath(map_path)
+        self.singlepath_list = []
+        for n in map_path_list:
+            self.singlepath_list.append(SinglePath.SinglePath(n))
         #   create the waypoint list
         self.keypoints = []
         self.waypoints = []
@@ -66,7 +68,7 @@ class MultiPath(object):
     #   paras:
     #       point:      keypoint node number
     #       time_cost:  time cost this node limited
-    def AddKeyPoint(self, point, time_cost):
+    def AddKeyPoint(self, point, time_cost, _type_=0):
         #   Add node to keypoints list
         #   check if the point is in the waypoint list or keypoint list
         for n in self.waypoints:
@@ -79,7 +81,7 @@ class MultiPath(object):
         if time_cost<=0:
             return False
         #   over the map
-        if point > self.singlepath.map_size:
+        if point > self.singlepath_list[_type_].map_size:
             return False
         p = PathTree.TreeNode(int(point))
         p.cost = 0
@@ -103,7 +105,7 @@ class MultiPath(object):
             if n.data == point:
                 return False
         #   over the map
-        if point > self.singlepath.map_size:
+        if point > self.singlepath_list[0].map_size:
             return False
         self.waypoints.append(PathTree.TreeNode(point))
         return True
@@ -117,7 +119,7 @@ class MultiPath(object):
     #       lastleaf:   last leaf node in PathTree
     def __Macro_Path_Out__(self, root, lastleaf, way_nodes):
         #   current strategy is to select first path
-        min = self.singlepath.INFINITE
+        min = self.singlepath_list[0].INFINITE
         node_cur = root
         node_last = node_cur
         temp_path = []
@@ -142,7 +144,7 @@ class MultiPath(object):
     #       lastleaf:   last leaf node in PathTree
     def __Micro_Path_Out__(self, root, lastleaf):
         #   current strategy is to select first path
-        min = self.singlepath.INFINITE
+        min = self.singlepath_list[0].INFINITE
         node_cur = root
         node_last = node_cur
         temp_path = []
@@ -179,9 +181,9 @@ class MultiPath(object):
                 #   Build Path Tree
                 ptree = PathTree.PathTree(node_dst, way_nodes, node_src)
                 #   Update all cost on each nodes
-                ptree.UpdateCost(ptree.NodeTree, self.singlepath.dist)
+                ptree.UpdateCost(ptree.NodeTree, self.singlepath_list[node_src._type_].dist)
                 ptree.Print()
-                ptree.ReduceTree(ptree.NodeTree, self.singlepath.dist, node_dst.cost_limit)
+                ptree.ReduceTree(ptree.NodeTree, self.singlepath_list[node_src._type_].dist, node_dst.cost_limit)
                 ptree.Print()
                 ptree.SortTree(ptree.NodeTree)
                 ptree.Print()
@@ -204,9 +206,10 @@ class MultiPath(object):
                 temp_min_dist = self.INFINITE
                 while len(way_nodes)>1:
                     for n in range(len(way_nodes)):
-                        if self.singlepath.dist[node_cur.data][way_nodes[n].data] < temp_min_dist:
+                        #   from the original data map
+                        if self.singlepath_list[node_src._type_].dist_map[node_cur.data][way_nodes[n].data] < temp_min_dist:
                             temp_min_node_num = n
-                            temp_min_dist = self.singlepath.dist[node_cur.data][way_nodes[n].data]
+                            temp_min_dist = self.singlepath_list[node_src._type_].dist[node_cur.data][way_nodes[n].data]
                     temp_path.append(way_nodes[temp_min_node_num].data)
                     node_cur = copy.deepcopy(way_nodes[temp_min_node_num])
                     del way_nodes[temp_min_node_num]
@@ -223,24 +226,27 @@ class MultiPath(object):
             print "Macro Path is :\t", mid_path
 
             #   get list of single paths
+            #   the point pair which describe the path
             micro_path_p = []
             while len(mid_path)>1:
                 point_src = mid_path[0]
                 point_dst = mid_path[1]
-                micro_path_p.append(self.singlepath.SSSP_Floyd(point_src, point_dst)[1])
+                micro_path_p.append(self.singlepath_list[node_src._type_].SSSP_Floyd(point_src, point_dst)[1])
                 del mid_path[0]
                 
             #   get micro path
+            '''
             micro_path = []
             for n in micro_path_p:
                 for m in n[1:]:
                     micro_path.append(m)
             micro_path.insert(0, micro_path_p[0][0])
-            return micro_path
+            '''
+            return  micro_path_p
 
 
 if __name__ == '__main__':
-    g = MultiPath("map_data.npy")
+    g = MultiPath(["map_data.npy"])
     g.AddKeyPoint(2, 10)
     #g.AddKeyPoint(4, 15)
     g.AddWayPoint(1)

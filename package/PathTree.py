@@ -36,6 +36,9 @@ class TreeNode(object):
         self.cost = 0
         self.cost_limit = 0
         self.depth = 0
+        #   walking = 0, ridding = 1, driving = 2
+        #   default = 0
+        self._type_ = 0
     def SetChilds(self, child_list):
         self.child = child_list
     def AddChild(self, child):
