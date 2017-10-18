@@ -161,12 +161,13 @@ class MultiPath(object):
     #       node_i:     start point
     def CalcMultiPath(self, point_i):
         #   Do the Path Tree Iterations
-        if self.waypoints!=[] and self.keypoints!=[]:
+        if self.waypoints!=[] or self.keypoints!=[]:
             #   DO
             path = []
             key_nodes = copy.deepcopy(self.keypoints)
             #   insert source node to key_nodes list
             key_nodes.insert(0, PathTree.TreeNode(point_i))
+            way_nodes = copy.deepcopy(self.waypoints)
             #   Node should be sort by time stamp
             pathtrees = []
             #   Macro Path list
@@ -176,6 +177,10 @@ class MultiPath(object):
                 #   set source and destination
                 node_src = key_nodes[0]
                 node_dst = key_nodes[1]
+                if node_src.data == node_dst.data:
+                    del key_nodes[0]
+                    print "[!!]\tWarning\tDetected Duplicated Point! Ignored!\t[!!]"
+                    continue
                 way_nodes = copy.deepcopy(self.waypoints)
                 print "to ", node_dst.data, " from ", node_src.data
                 #   Build Path Tree
@@ -193,15 +198,21 @@ class MultiPath(object):
 
             #   if the way node is still not empty 
             #   after the keynode iteration
+            print "[!]\tRemained way point : ", way_nodes
             if way_nodes!=[]:
                 #   Choose the nearest way point from the last key point
-                node_src = key_nodes[0]
+                if len(self.keypoints)>0:
+                    temp_path = [key_nodes[0].data]
+                    node_src = key_nodes[0]
+                else:
+                    print "[*]\tInfo:\tKey Nodes not enough!"
+                    node_src = way_nodes[0]
+                    temp_path = [way_nodes[0].data]
+                    del way_nodes[0]
                 node_cur = node_src
-                print "[!]  Remained way point : "
                 for i in way_nodes:
                     print "\t\t", i.data
                 print "\t from key point : ", node_src.data
-                temp_path = [key_nodes[0].data]
                 temp_min_node_num = 0
                 temp_min_dist = self.INFINITE
                 while len(way_nodes)>1:
@@ -214,6 +225,7 @@ class MultiPath(object):
                     node_cur = copy.deepcopy(way_nodes[temp_min_node_num])
                     del way_nodes[temp_min_node_num]
                 temp_path.append(way_nodes[0].data)
+                print "\t\ttemp path is ", temp_path
                 macro_path.append(temp_path)
             print macro_path
 
@@ -235,14 +247,20 @@ class MultiPath(object):
                 del mid_path[0]
                 
             #   get micro path
-            '''
+            
             micro_path = []
             for n in micro_path_p:
                 for m in n[1:]:
                     micro_path.append(m)
             micro_path.insert(0, micro_path_p[0][0])
-            '''
-            return  micro_path_p
+            
+            tag_path = []
+            while len(micro_path)>1:
+                tag_temp = [micro_path[0],micro_path[1]]
+                tag_path.append(tag_temp)
+                del micro_path[0]
+                
+            return  tag_path
 
 
 if __name__ == '__main__':

@@ -106,6 +106,7 @@ class SinglePath(object):
 			temp_path.insert(0, int(self.path[node_src][node_cur]))
 			node_cur = int(self.path[node_src][node_cur])
 		temp_path.append(node_dst)
+		print self.path[node_src][node_dst]
 		return self.dist[node_src][node_dst], temp_path
 							
 if __name__ == '__main__':

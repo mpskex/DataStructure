@@ -55,8 +55,13 @@ class PathTree(object):
     #       child_list
     #       lastleaf
     def __init__(self, root, child_list, lastleaf):
-        self.NodeTree = self.CreateTree(root, child_list)
-        self.lastleaf = lastleaf
+        #   only key nodes
+        if child_list == []:
+            self.NodeTree = root
+            self.lastleaf = lastleaf
+        else:
+            self.NodeTree = self.CreateTree(root, child_list)
+            self.lastleaf = lastleaf
 
     #   Tree Creation
     #   --------------------------------------------
@@ -66,7 +71,7 @@ class PathTree(object):
     #       lastleaf:   last leaf to be fill
     def CreateTree(self, parent, child_list):
         if child_list == []:
-            return 
+            return
         return_child_list = []
         for n in child_list:
             temp_child_list = copy.deepcopy(child_list)

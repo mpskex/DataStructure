@@ -25,7 +25,10 @@ point_cord=[
     "243 355",
     "420 540",
     "712 428",
-    "495 515"
+    "495 515",
+	"361 426",
+	"475 429",
+	"606 389"
 	]
 point_name=[
     u'宿舍',
@@ -56,10 +59,8 @@ def index():
 		s = ""
 		for n in node_str:
 			s += n[1]
-		print node_str
 		return render_template('index.html', nodes=s)
 	else:
-		print "wrong method"
 		return make_response('Error')
 
 @app.route('/remove', methods = ['POST'])
@@ -68,7 +69,7 @@ def Remove():
 		num = request.form.get('node_num_r')
 		if not mp.RemovePoint(int(num)):
 			abort(503)
-		print "[!]Cleared ", num, " node"
+		print "[!]\tCleared ", num, " node"
 		for n in range(len(node_str)):
 			if node_str[n][0] == num:
 				del node_str[n]
@@ -84,8 +85,12 @@ def Remove():
 def ShowPath():
 	if len(node_str)>1:
 		print node_str[0][0]
+		print "[*]\tnodes\t\n", "\tkeypoints: ",mp.keypoints, "\n\twaypoints: ",mp.waypoints 
 		k = mp.CalcMultiPath(int(node_str[0][0]))
-		print "!!!nodes\t", mp.keypoints, mp.waypoints 
+		print "[*]\tpath is :", k
+		#if not mp.RemovePoint(int(node_str[0][0])):
+			#abort(503)
+		#print "!!!Path\t", k
 		ns = ""
 		for n in node_str:
 			ns += n[1]
@@ -101,14 +106,14 @@ def ShowPath():
 def RemoveAll():
 	mp.RemovePoints()
 	node_str[:]=[]
-	print "[!]Cleared all points"
+	print "[!]\tCleared all points"
 	return redirect(url_for('index'))
 
 @app.route('/addpoint', methods = ['POST','GET'])
 def AddWayPoint():
 	if request.method == 'POST':
 		node_type = request.form.get('node_type')
-		print "[*]Recieved Post"
+		print "[*]\tRecieved Post"
 		print "\tPosted Node Number is : ", request.form.get('node_num')
 		print "\tPosted Node Cost Limit is : ", request.form.get('cost_limit')
 		if node_type == 'keynode':
@@ -133,7 +138,7 @@ def AddWayPoint():
 				s = ""
 				for n in node_str:
 					s += n[1]
-				print node_str
+				#print node_str
 				return redirect(url_for('index'))
 			else:
 				abort(501)
