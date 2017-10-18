@@ -33,6 +33,7 @@
 		</ul>
 		<div class="content">
 			<div class="loginbar" align="right">
+				<input type="button" value="ShowMePath" class="btn2" onclick="window.location.href='showpath';"/>
 				<input type="button" value="Login" class="btn2" onclick="window.location.href='login';"/>
 				<input type="button" value="Clear" class="btn2" onclick="window.location.href='removeall';alert('已经清空所有输入！');"/>
 			</div>
@@ -46,11 +47,15 @@
 						<feGaussianBlur in="SourceGraphic" stdDeviation="0.7" />
 						</filter>
 					</defs>
+					{{ path|safe }}
+					<!--手写路径
 					<path d="M491 99
-					L491 115 432 119 433 135 
-					L377 139 377 163 406 163"
+					L491 115 432 119 433 135 377 139"
 					style="fill:transparent;stroke:blue;stroke-width:4;filter:url(#Gaussian_Blur)"/>
-					{{ render_path|safe }}
+					<path d="M491 99
+					L491 115 432 119 433 135 377 139"
+					style="fill:transparent;stroke:blue;stroke-width:4;filter:url(#Gaussian_Blur)"/>
+					-->
 				</svg>
 			</div>
 			<div align="center">

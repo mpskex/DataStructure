@@ -16,6 +16,17 @@ DATABASE = 'database.db'
 #   Initialize the objects
 app = Flask(__name__)
 mp = MultiPath.MultiPath(["map/map_data.npy"])
+point_cord=[
+	"491 99",
+    "418 412",
+    "377 139",
+    "329 305",
+    "331 493",
+    "243 355",
+    "420 540",
+    "712 428",
+    "495 515"
+	]
 point_name=[
     u'宿舍',
     u'美食园',
@@ -28,6 +39,7 @@ point_name=[
     u'奥运场馆'
 	]
 node_str = []
+path_str = ""
 
 #url_for('static', filename='style.css')
 
@@ -68,6 +80,23 @@ def Remove():
 		print node_str
 		return redirect(url_for('index'))
 
+@app.route('/showpath', methods = ['GET'])
+def ShowPath():
+	if len(node_str)>1:
+		print node_str[0][0]
+		k = mp.CalcMultiPath(int(node_str[0][0]))
+		print "!!!nodes\t", mp.keypoints, mp.waypoints 
+		ns = ""
+		for n in node_str:
+			ns += n[1]
+		ps = ""
+		for n in k:
+			ps += PathToHtml(n[0], n[1], u'green')
+		print ps
+		return render_template('index.html', nodes=ns, path=ps)
+	else:
+		abort(502)
+
 @app.route('/removeall', methods = ['GET'])
 def RemoveAll():
 	mp.RemovePoints()
@@ -90,10 +119,6 @@ def AddWayPoint():
 			if mp.AddKeyPoint(int(node_num), int(cost_limit)):
 				print "Add Key Node ", node_num, " cost limit: ", cost_limit
 				node_str.append((node_num, PointToHtml(int(node_num), node_type, cost_limit)))
-				s = ""
-				for n in node_str:
-					s += n[1]
-				print node_str
 				return redirect(url_for('index'))
 			else:
 				abort(501)
@@ -165,7 +190,16 @@ def PointToHtml(num, typ, limit):
 		return False
 	s += u'</div>'
 	return s
-	
+
+def PathToHtml(n_a, n_b, color):
+	s = u'<path d="M'
+	s += point_cord[n_a]
+	s += u' '
+	s += point_cord[n_b]
+	s += u'"style="fill:transparent;stroke:'
+	s += color
+	s += u';stroke-width:4;filter:url(#Gaussian_Blur)"/>'
+	return s
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
