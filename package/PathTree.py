@@ -103,14 +103,14 @@ class PathTree(object):
     #   paras:
     #       node:   root node in sub tree
     #       num:    count num start
-    def ReduceTree(self, root, dist_matrix, cost_limit, num=1):
+    def ReduceTree(self, root, dist_matrix, cost_limit, depth, num=1):
         for i in root.child[:]:
             total_cost = i.cost + dist_matrix[self.lastleaf.data][i.data]
             print "to ", i.data, " path length is ", total_cost, " limit is : ", cost_limit
-            if total_cost > cost_limit:
+            if total_cost > cost_limit or num >= depth:
                 root.child.remove(i)
             else:
-                self.ReduceTree(i, dist_matrix, cost_limit, num=num+1)
+                self.ReduceTree(i, dist_matrix, cost_limit, num=num+1, depth=depth)
 
     #   sort the path tree
     #   --------------------------------------------
@@ -124,7 +124,7 @@ class PathTree(object):
                 continue
             for m in range(0, n):
                 if root.child[m].cost > root.child[n].cost:
-                    root.child.insert(m, root.child[n].cost)
+                    root.child.insert(m, root.child[n])
                     del root.child[n+1]
                     break
 

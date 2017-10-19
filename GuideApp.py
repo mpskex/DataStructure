@@ -43,6 +43,7 @@ point_name=[
 	]
 node_str = []
 path_str = ""
+begin_node = ""
 
 #url_for('static', filename='style.css')
 
@@ -68,7 +69,8 @@ def Remove():
 	if request.method == 'POST':
 		num = request.form.get('node_num_r')
 		if not mp.RemovePoint(int(num)):
-			abort(503)
+			if len(node_str)>1:
+				abort(503)
 		print "[!]\tCleared ", num, " node"
 		for n in range(len(node_str)):
 			if node_str[n][0] == num:
@@ -81,23 +83,26 @@ def Remove():
 		print node_str
 		return redirect(url_for('index'))
 
-@app.route('/showpath', methods = ['GET'])
+@app.route('/showpath', methods = ['POST'])
 def ShowPath():
 	if len(node_str)>1:
-		print node_str[0][0]
+		depth = request.form.get('path_depth')
+		print "[*]\tpath depth is \t", depth
 		print "[*]\tnodes\t\n", "\tkeypoints: ",mp.keypoints, "\n\twaypoints: ",mp.waypoints 
-		k = mp.CalcMultiPath(int(node_str[0][0]))
+		print "[*]\tstart with node ", node_str[0][0]
+		mp.PrintStatus()
+		if len(node_str)<=1:
+			abort(505)
+		k = mp.CalcMultiPath(int(node_str[0][0]), int(depth))
+		if k == False or k == None:
+			abort(505)
 		print "[*]\tpath is :", k
-		#if not mp.RemovePoint(int(node_str[0][0])):
-			#abort(503)
-		#print "!!!Path\t", k
 		ns = ""
 		for n in node_str:
 			ns += n[1]
 		ps = ""
 		for n in k:
 			ps += PathToHtml(n[0], n[1], u'green')
-		print ps
 		return render_template('index.html', nodes=ns, path=ps)
 	else:
 		abort(502)
@@ -112,15 +117,23 @@ def RemoveAll():
 @app.route('/addpoint', methods = ['POST','GET'])
 def AddWayPoint():
 	if request.method == 'POST':
+		node_num = request.form.get('node_num')
 		node_type = request.form.get('node_type')
+		cost_limit = request.form.get('cost_limit')
 		print "[*]\tRecieved Post"
 		print "\tPosted Node Number is : ", request.form.get('node_num')
 		print "\tPosted Node Cost Limit is : ", request.form.get('cost_limit')
+		if not (node_num.isdigit() and cost_limit.isdigit()):
+			abort(501)
+		if len(node_str)==0:
+			print "[*]\tNote\tThe first seen node will be the begin node!"
+			begin_node = node_num
+			print "[*]\tNote\t Begin with node ", begin_node
+			node_str.append((node_num, PointToHtml(int(node_num), u'begin', cost_limit)))
+			return redirect(url_for('index'))
 		if node_type == 'keynode':
 			node_num = request.form.get('node_num')
 			cost_limit = request.form.get('cost_limit')
-			if not (node_num.isdigit() and cost_limit.isdigit()):
-				abort(501)
 			if mp.AddKeyPoint(int(node_num), int(cost_limit)):
 				print "Add Key Node ", node_num, " cost limit: ", cost_limit
 				node_str.append((node_num, PointToHtml(int(node_num), node_type, cost_limit)))
@@ -129,16 +142,10 @@ def AddWayPoint():
 				abort(501)
 		elif node_type == 'waynode':
 			node_num = request.form.get('node_num')
-			if not node_num.isdigit():
-				abort(501)
 			if mp.AddWayPoint(int(node_num)):
 				print "Add Way Node ", node_num
 				resp = make_response(render_template('index.html'))
 				node_str.append((node_num, PointToHtml(int(node_num), node_type, 0)))
-				s = ""
-				for n in node_str:
-					s += n[1]
-				#print node_str
 				return redirect(url_for('index'))
 			else:
 				abort(501)
@@ -172,6 +179,10 @@ def internal_error(error):
 def internal_error(error):
 	return render_template('error.html', resp_code='503', error_message=u'无法删除您请求的路径点>_<'), 503
 
+@app.errorhandler(505)
+def internal_error(error):
+	return render_template('error.html', resp_code='505', error_message=u'未知内部错误!>_<'), 505
+
 def connect_db():
 	return sqlite3.connect(DATABASE)
 
@@ -191,6 +202,10 @@ def PointToHtml(num, typ, limit):
 		s += u'普通路径点'
 		s += u'<br>'
 		s += u'限制: 无'
+	elif typ==u'begin':
+		s += u'起点'
+		s += u'<br>'
+		s += u'限制：无'
 	else:
 		return False
 	s += u'</div>'

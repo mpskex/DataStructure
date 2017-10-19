@@ -78,8 +78,8 @@ class SinglePath(object):
 	def SGT_Floyd_Update(self):
 		dist = self.dist_map.copy()
 		path = self.neigh_map.copy()
-		for i in range(dist.shape[0]):
-			for j in range(dist.shape[0]):
+		for j in range(dist.shape[0]):
+			for i in range(dist.shape[0]):
 				for k in range(dist.shape[0]):
 					#	avoid fake shortest path
 					if dist[i][j] + dist[j][k] < dist[i][k]:

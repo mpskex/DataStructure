@@ -23,7 +23,7 @@
 				</select> 
 			</div>
 			<div class="opt_element"><i class="point limit"></i>限制
-				<div id="plimit_value" style="float: right;"></div>
+				<div id="plimit_value" style="float: right;">0</div>
 				<input type="range" id="plimit" min="0" max="100" onmouseup="GetLimitValue();"/>
 			</div>
 			<div>
@@ -33,7 +33,9 @@
 		</ul>
 		<div class="content">
 			<div class="loginbar" align="right">
-				<input type="button" value="ShowMePath" class="btn2" onclick="window.location.href='showpath';"/>
+				<div style="background: white;">中继节点：<div id="depth_num" style="background: white;">3</div></div><input type="range" id="dlimit"  value = "3" min="1" max="20" onmouseup=
+				"document.getElementById('depth_num').innerHTML=document.getElementById('dlimit').value;document.getElementById('path_depth').value=document.getElementById('dlimit').value;">
+				<input type="button" value="ShowMePath" class="btn2" onclick="document.getElementById('pform').submit();"/>
 				<input type="button" value="Login" class="btn2" onclick="window.location.href='login';"/>
 				<input type="button" value="Clear" class="btn2" onclick="window.location.href='removeall';alert('已经清空所有输入！');"/>
 			</div>
@@ -52,9 +54,6 @@
 					<path d="M491 99
 					L491 115 432 119 433 135 377 139"
 					style="fill:transparent;stroke:blue;stroke-width:4;filter:url(#Gaussian_Blur)"/>
-					<path d="M491 99
-					L491 115 432 119 433 135 377 139"
-					style="fill:transparent;stroke:blue;stroke-width:4;filter:url(#Gaussian_Blur)"/>
 					-->
 				</svg>
 			</div>
@@ -67,6 +66,9 @@
 				</form>
 				<form id="rform" action="/remove" method="post" hidden>
 					<input type="text" name="node_num_r" id="node_num_r" value="-1"><br>
+				</form>
+				<form id="pform" action="/showpath" method="post" hidden>
+					<input type="text" name="path_depth" id="path_depth" value="3"><br>
 				</form>
 			</div>
 		</div>

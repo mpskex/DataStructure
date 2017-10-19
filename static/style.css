@@ -18,7 +18,7 @@
 */
 .loginbar{
     position: absolute;
-    top: 0; right: 0; left: 0;
+    top: 0; left: 500px;
     z-index: 1004;
 }
 /*

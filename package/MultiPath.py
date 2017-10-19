@@ -132,6 +132,7 @@ class MultiPath(object):
                 if node_cur.data == way_nodes[n].data:
                     print "[!]Repeated[!] ", way_nodes[n].data
                     del way_nodes[n]
+                    break
         temp_path.insert(0, node_cur.data)
         temp_path.insert(0, lastleaf.data)
         return temp_path
@@ -159,19 +160,21 @@ class MultiPath(object):
     #   --------------------------------------------
     #   paras:
     #       node_i:     start point
-    def CalcMultiPath(self, point_i):
-        #   Do the Path Tree Iterations
-        if self.waypoints!=[] or self.keypoints!=[]:
+    def CalcMultiPath(self, point_i, depth):
+        #   Add the begin node to the key node list
+        key_nodes = copy.deepcopy(self.keypoints)
+        key_nodes.insert(0, PathTree.TreeNode(point_i))
+        way_nodes = copy.deepcopy(self.waypoints)
+        macro_path = []
+        print "\n[*] Stage 1 : Keynodes:", len(key_nodes), " Waynodes: ", len(way_nodes)
+        if len(key_nodes)>1:
             #   DO
             path = []
-            key_nodes = copy.deepcopy(self.keypoints)
-            #   insert source node to key_nodes list
-            key_nodes.insert(0, PathTree.TreeNode(point_i))
-            way_nodes = copy.deepcopy(self.waypoints)
-            #   Node should be sort by time stamp
+            #   Node should be sort by time cost
             pathtrees = []
             #   Macro Path list
             macro_path = []
+            #   Do the Path Tree Iterations
             #   for every key point with limited time
             while len(key_nodes) > 1:
                 #   set source and destination
@@ -188,7 +191,8 @@ class MultiPath(object):
                 #   Update all cost on each nodes
                 ptree.UpdateCost(ptree.NodeTree, self.singlepath_list[node_src._type_].dist)
                 ptree.Print()
-                ptree.ReduceTree(ptree.NodeTree, self.singlepath_list[node_src._type_].dist, node_dst.cost_limit)
+                print "[*]\tPath depth limit is ", depth
+                ptree.ReduceTree(ptree.NodeTree, self.singlepath_list[node_src._type_].dist, node_dst.cost_limit, depth)
                 ptree.Print()
                 ptree.SortTree(ptree.NodeTree)
                 ptree.Print()
@@ -196,71 +200,74 @@ class MultiPath(object):
                 #   code here
                 del key_nodes[0]
 
-            #   if the way node is still not empty 
-            #   after the keynode iteration
-            print "[!]\tRemained way point : ", way_nodes
-            if way_nodes!=[]:
-                #   Choose the nearest way point from the last key point
-                if len(self.keypoints)>0:
-                    temp_path = [key_nodes[0].data]
-                    node_src = key_nodes[0]
-                else:
-                    print "[*]\tInfo:\tKey Nodes not enough!"
-                    node_src = way_nodes[0]
-                    temp_path = [way_nodes[0].data]
-                    del way_nodes[0]
-                node_cur = node_src
-                for i in way_nodes:
-                    print "\t\t", i.data
-                print "\t from key point : ", node_src.data
-                temp_min_node_num = 0
+        #   if the way node is still not empty 
+        #   after the keynode iteration
+        print "\n[*] Stage 2 : Keynodes:", len(key_nodes), " Waynodes: ", len(way_nodes)
+        if len(way_nodes)>0:
+            #   Choose the nearest way point from the last key point
+            if len(key_nodes)<=0:
+                print "[!!]\tWarnnig:\tKey Nodes not enough! Abort!\t[!!]"
+                return False
+            else:
+                temp_path = [key_nodes[0].data]
+                node_src = key_nodes[0]
+            node_cur = node_src
+            for i in way_nodes:
+                print "\t\t", i.data
+            print "\t from key point : ", node_src.data
+            while len(way_nodes)>1:
+                temp_min_node_num = self.INFINITE
                 temp_min_dist = self.INFINITE
-                while len(way_nodes)>1:
-                    for n in range(len(way_nodes)):
-                        #   from the original data map
-                        if self.singlepath_list[node_src._type_].dist_map[node_cur.data][way_nodes[n].data] < temp_min_dist:
-                            temp_min_node_num = n
-                            temp_min_dist = self.singlepath_list[node_src._type_].dist[node_cur.data][way_nodes[n].data]
-                    temp_path.append(way_nodes[temp_min_node_num].data)
-                    node_cur = copy.deepcopy(way_nodes[temp_min_node_num])
+                for n in range(len(way_nodes)):
+                    #   from the original data map
+                    if self.singlepath_list[node_src._type_].dist[node_cur.data][way_nodes[n].data] < temp_min_dist:
+                        temp_min_node_num = n
+                        temp_min_dist = self.singlepath_list[node_src._type_].dist[node_cur.data][way_nodes[n].data]
+                print "!!!temp_min_node_num ", temp_min_node_num
+                temp_path.append(way_nodes[temp_min_node_num].data)
+                node_cur = copy.deepcopy(way_nodes[temp_min_node_num])
+                if temp_min_node_num >= len(way_nodes):
+                    print "[!!]\tError!\tway node list out of range!\t[!!]"
+                    return False
+                else:
                     del way_nodes[temp_min_node_num]
-                temp_path.append(way_nodes[0].data)
-                print "\t\ttemp path is ", temp_path
-                macro_path.append(temp_path)
-            print macro_path
+            temp_path.append(way_nodes[0].data)
+            print "\t\ttemp path is ", temp_path
+            macro_path.append(temp_path)
+        print macro_path
 
-            #   concenate the path pieces into continuos path sequence
-            mid_path = []
-            for n in macro_path:
-                for m in n[1:]:
-                    mid_path.append(m)
-            mid_path.insert(0, macro_path[0][0])
-            print "Macro Path is :\t", mid_path
+        #   concenate the path pieces into continuos path sequence
+        mid_path = []
+        for n in macro_path:
+            for m in n[1:]:
+                mid_path.append(m)
+        mid_path.insert(0, macro_path[0][0])
+        print "Macro Path is :\t", mid_path
 
-            #   get list of single paths
-            #   the point pair which describe the path
-            micro_path_p = []
-            while len(mid_path)>1:
-                point_src = mid_path[0]
-                point_dst = mid_path[1]
-                micro_path_p.append(self.singlepath_list[node_src._type_].SSSP_Floyd(point_src, point_dst)[1])
-                del mid_path[0]
-                
-            #   get micro path
+        #   get list of single paths
+        #   the point pair which describe the path
+        micro_path_p = []
+        while len(mid_path)>1:
+            point_src = mid_path[0]
+            point_dst = mid_path[1]
+            micro_path_p.append(self.singlepath_list[node_src._type_].SSSP_Floyd(point_src, point_dst)[1])
+            del mid_path[0]
             
-            micro_path = []
-            for n in micro_path_p:
-                for m in n[1:]:
-                    micro_path.append(m)
-            micro_path.insert(0, micro_path_p[0][0])
-            
-            tag_path = []
-            while len(micro_path)>1:
-                tag_temp = [micro_path[0],micro_path[1]]
-                tag_path.append(tag_temp)
-                del micro_path[0]
-                
-            return  tag_path
+        #   get micro path
+        
+        micro_path = []
+        for n in micro_path_p:
+            for m in n[1:]:
+                micro_path.append(m)
+        micro_path.insert(0, micro_path_p[0][0])
+        
+        tag_path = []
+        while len(micro_path)>1:
+            tag_temp = [micro_path[0],micro_path[1]]
+            tag_path.append(tag_temp)
+            del micro_path[0]
+
+        return  tag_path
 
 
 if __name__ == '__main__':
