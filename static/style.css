@@ -109,8 +109,8 @@ map 地图
 */
 .map_holder{
     cursor: pointer;
-    position: relative; 
-    bottom: 0; right: 0;
+    position: absolute; 
+    left:0; top: 0;
 }
 .map_mask{
     position: absolute;

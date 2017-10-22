@@ -9,3 +9,11 @@
     *   Dealing with the different type of transport between key nodes
     *   Web Server to query the result of this module
     *   Web page design(JS/H5) 
+*   **UI**
+    *   在--分钟内到达
+    *   普通路径点消失限制
+    *   “我赶时间”／“不在意时间（我溜溜弯）“
+    *   动画
+
+*   **Optinal**
+    *   用户可以自定顺序

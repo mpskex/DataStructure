@@ -33,6 +33,12 @@ var point_name = new Array(
 var static_path = "static/"
 //  当前点
 var cur_point = -1;
+//  动画指针
+var frame = 0;
+var dy_color_r = 23;
+var dy_color_g = 37;
+var dy_color_b = 57;
+var path_index = new Array();
 
 window.onload=function(){
     //  绘制路径点
@@ -52,10 +58,11 @@ window.onload=function(){
                 svg.appendChild(p);
             }
         }
+        
     }
 
     var menu = document.getElementById("option");
-    var map = document.getElementById("map_holder");
+    var map = document.getElementById("map_holder_node");
     
     map.oncontextmenu = function(e) {
         //  初始化值
@@ -91,6 +98,15 @@ window.onload=function(){
         //  阻止浏览器默认事件
         return false;
     }
+
+    //  记录Path对象的长度
+    CountPath();
+    //  隐藏所有Path
+    HideAllPath();
+    //  设置定时器
+    var t1 = window.setInterval(AnimatedPath, 1000); 
+
+    //  按钮事件
     document.getElementById("opt_btn_add").onmouseover = function(e){
         document.getElementById("opt_btn_add").style.background = "#7869c3";
     }
@@ -197,14 +213,59 @@ function GetLimitValue()
     d.innerHTML = l.value;
 }
 
-function draw_guide(ctx)
+function AnimatedPath()
 {
-    ctx.fillStyle = "rgb(200,0,0)";
-    ctx.fillRect (10, 10, 55, 50);
-    
-    ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-    ctx.fillRect (30, 30, 55, 50);
+    console.log(frame);
+    if(frame==0)
+    {
+        HideAllPath();
+        frame = frame + 1;
+    }
+    else if(frame <= path_index.length + 1)
+    {
+        HideAllPath();
+        path_root = document.getElementById("path_holder");
+        path_root.childNodes[path_index[frame-1]].style.display = "";
+        path_root.childNodes[path_index[frame-1]].style.stroke = "#70fe38";
+        frame = (frame + 1)%(path_index.length+1)
+    }
+    else
+    {
+        frame = 0;
+        console.log("alert: frame exceed!!");
+    }
+}
 
+function colorRGB2Hex(r, g, b) 
+{
+    var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    return hex;
+ }
+
+function HideAllPath()
+{
+    path_root = document.getElementById("path_holder");
+    for(var k=0 in path_root.childNodes)
+    {
+        if(path_root.childNodes[k].nodeName == "path")
+        {
+            path_root.childNodes[k].style.display = "none";
+        }
+    }
+}
+
+function CountPath()
+{
+    path_root = document.getElementById("path_holder");
+    for(var k=0 in path_root.childNodes)
+    {
+        if(path_root.childNodes[k].nodeName == "path")
+        {
+            path_index.push(k);
+            console.log(path_root.childNodes[k]);
+        }
+    }
+    console.log(path_index);
 }
 
 function draw()
