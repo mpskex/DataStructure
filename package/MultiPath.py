@@ -164,6 +164,9 @@ class MultiPath(object):
         #   Add the begin node to the key node list
         key_nodes = copy.deepcopy(self.keypoints)
         key_nodes.insert(0, PathTree.TreeNode(point_i))
+        t_dst = PathTree.TreeNode(point_i)
+        t_dst.cost_limit = self.INFINITE
+        key_nodes.append(t_dst)
         way_nodes = copy.deepcopy(self.waypoints)
         macro_path = []
         print "\n[*] Stage 1 : Keynodes:", len(key_nodes), " Waynodes: ", len(way_nodes)
@@ -180,11 +183,14 @@ class MultiPath(object):
                 #   set source and destination
                 node_src = key_nodes[0]
                 node_dst = key_nodes[1]
-                if node_src.data == node_dst.data:
+                if node_src.data == node_dst.data and node_src.data != point_i:
                     del key_nodes[0]
                     print "[!!]\tWarning\tDetected Duplicated Point! Ignored!\t[!!]"
                     continue
-                way_nodes = copy.deepcopy(self.waypoints)
+                #   Last point does't need limitation 
+                if node_dst.data == point_i:
+                    depth = self.INFINITE
+                #way_nodes = copy.deepcopy(self.waypoints)
                 print "to ", node_dst.data, " from ", node_src.data
                 #   Build Path Tree
                 ptree = PathTree.PathTree(node_dst, way_nodes, node_src)
@@ -223,7 +229,6 @@ class MultiPath(object):
                     if self.singlepath_list[node_src._type_].dist[node_cur.data][way_nodes[n].data] < temp_min_dist:
                         temp_min_node_num = n
                         temp_min_dist = self.singlepath_list[node_src._type_].dist[node_cur.data][way_nodes[n].data]
-                print "!!!temp_min_node_num ", temp_min_node_num
                 temp_path.append(way_nodes[temp_min_node_num].data)
                 node_cur = copy.deepcopy(way_nodes[temp_min_node_num])
                 if temp_min_node_num >= len(way_nodes):

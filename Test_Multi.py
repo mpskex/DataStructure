@@ -16,4 +16,4 @@ if __name__ == '__main__':
     g.AddWayPoint(6)
     g.AddWayPoint(4)
     g.PrintStatus()
-    print "Final result:\t", g.CalcMultiPath(0, depth=1)
+    print "Final result:\t", g.CalcMultiPath(0, depth=2)

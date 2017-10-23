@@ -17,7 +17,9 @@ var point_on_map = new Array(
     //  软件楼
     Array(712, 428),
     //  奥运场馆
-    Array(495, 515)
+    Array(495, 515),
+    //  三教
+    Array(416, 250)
 );
 var point_name = new Array(
     "宿舍",
@@ -28,7 +30,8 @@ var point_name = new Array(
     "信息楼",
     "人文楼",
     "软件楼",
-    "奥运场馆"
+    "奥运场馆",
+    "三教"
 );
 var static_path = "static/"
 //  当前点
@@ -104,7 +107,7 @@ window.onload=function(){
     //  隐藏所有Path
     HideAllPath();
     //  设置定时器
-    var t1 = window.setInterval(AnimatedPath, 1000); 
+    var t1 = window.setInterval(AnimatedPath, 200); 
 
     //  按钮事件
     document.getElementById("opt_btn_add").onmouseover = function(e){

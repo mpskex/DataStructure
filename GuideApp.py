@@ -26,9 +26,12 @@ point_cord=[
     "420 540",
     "712 428",
     "495 515",
+	"416 250",
+	"461 240",
 	"361 426",
 	"475 429",
-	"606 389"
+	"606 389",
+	"331 245"
 	]
 point_name=[
     u'宿舍',
@@ -39,7 +42,8 @@ point_name=[
     u'信息楼',
     u'人文楼',
     u'软件楼',
-    u'奥运场馆'
+    u'奥运场馆',
+	u'三教'
 	]
 node_str = []
 path_str = ""
@@ -86,6 +90,8 @@ def Remove():
 @app.route('/showpath', methods = ['POST'])
 def ShowPath():
 	if len(node_str)>1:
+		if not mp.AddKeyPoint(node_str[0][0], 9999):
+			print "[!!]\tFailed to create dst node!\t[!!]"
 		depth = request.form.get('path_depth')
 		print "[*]\tpath depth is \t", depth
 		print "[*]\tnodes\t\n", "\tkeypoints: ",mp.keypoints, "\n\twaypoints: ",mp.waypoints 
