@@ -123,7 +123,7 @@ class PathTree(object):
             if n == 0:
                 continue
             for m in range(0, n):
-                if root.child[m].cost > root.child[n].cost:
+                if root.child[m].cost < root.child[n].cost:
                     root.child.insert(m, root.child[n])
                     del root.child[n+1]
                     break

@@ -60,7 +60,7 @@ copy	../package/MultiPath.py	/^import copy$/;"	kind:namespace	line:6
 copy	../package/PathTree.py	/^import copy$/;"	kind:namespace	line:6
 g	../Test_Multi.py	/^    g = MultiPath.MultiPath(["map\/map_data.npy"])$/;"	kind:variable	line:11
 g	../Test_Single.py	/^    g = SinglePath.SinglePath("map\/map_data.npy")$/;"	kind:variable	line:11
-g	../package/MultiPath.py	/^    g = MultiPath(["map_data.npy"])$/;"	kind:variable	line:274
+g	../package/MultiPath.py	/^    g = MultiPath(["map_data.npy"])$/;"	kind:variable	line:279
 g	../package/SinglePath.py	/^	g = SinglePath("map_data.npy")$/;"	kind:variable	line:113
 genMap.py	../tools/genMap.py	1;"	kind:file	line:1
 getData	../package/SinglePath.py	/^	def getData(self):$/;"	kind:member	line:60

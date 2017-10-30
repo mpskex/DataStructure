@@ -1,6 +1,7 @@
-drop table if exists files;
-create table FILES (
-  ID        integer primary key,
-  TITLE     text not null,
-  FILEPATH  text not null
-); 
+drop table if exists USERS;
+CREATE TABLE USERS(
+  UserID  text  primary key,
+  UserName  text,
+  Passwd text not null,
+  sessionID text not null
+);
