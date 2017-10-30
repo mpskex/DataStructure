@@ -1,3 +1,9 @@
+/*
+#	mpsk
+#	Beijing University of Technology
+#	Copyright 2017
+*/
+
 //  全局变量 描述关键点集
 var point_on_map = new Array(
     //  宿舍
