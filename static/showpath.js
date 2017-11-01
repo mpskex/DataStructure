@@ -112,6 +112,8 @@ window.onload=function(){
     CountPath();
     //  隐藏所有Path
     HideAllPath();
+    //  设置定时器
+    var t1 = window.setInterval(AnimatedPath, 200); 
 
     //  按钮事件
     document.getElementById("opt_btn_add").onmouseover = function(e){
@@ -140,7 +142,6 @@ function CheckInput()
 {
     document.getElementById("node_num").value = cur_point;
     document.getElementById("node_type").value = document.getElementById("ptype").value;
-    document.getElementById("node_trans").value = document.getElementById("ptrans").value;
     document.getElementById("cost_limit").value = document.getElementById("plimit").value;
 
     var node_type = document.getElementById("ptype").value;
@@ -219,6 +220,29 @@ function GetLimitValue()
     var l = document.getElementById("plimit");
     var d = document.getElementById("plimit_value");
     d.innerHTML = l.value;
+}
+
+function AnimatedPath()
+{
+    console.log(frame);
+    if(frame==0)
+    {
+        HideAllPath();
+        frame = frame + 1;
+    }
+    else if(frame <= path_index.length + 1)
+    {
+        HideAllPath();
+        path_root = document.getElementById("path_holder");
+        path_root.childNodes[path_index[frame-1]].style.display = "";
+        path_root.childNodes[path_index[frame-1]].style.stroke = "#70fe38";
+        frame = (frame + 1)%(path_index.length+1)
+    }
+    else
+    {
+        frame = 0;
+        console.log("alert: frame exceed!!");
+    }
 }
 
 function colorRGB2Hex(r, g, b) 

@@ -47,7 +47,7 @@ point_name=[
 	]
 node_str = []
 path_str = ""
-begin_node = ""
+begin_node = ''
 
 #url_for('static', filename='style.css')
 
@@ -109,7 +109,7 @@ def ShowPath():
 		ps = ""
 		for n in k:
 			ps += PathToHtml(n[0], n[1], u'green')
-		return render_template('index.html', nodes=ns, path=ps)
+		return render_template('showpath.html', nodes=ns, path=ps)
 	else:
 		abort(502)
 
@@ -125,9 +125,11 @@ def AddWayPoint():
 	if request.method == 'POST':
 		node_num = request.form.get('node_num')
 		node_type = request.form.get('node_type')
+		node_trans = request.form.get('node_trans')
 		cost_limit = request.form.get('cost_limit')
 		print "[*]\tRecieved Post"
 		print "\tPosted Node Number is : ", request.form.get('node_num')
+		print "\tPosted Node Transport is : ", request.form.get('node_trans')
 		print "\tPosted Node Cost Limit is : ", request.form.get('cost_limit')
 		if not (node_num.isdigit() and cost_limit.isdigit()):
 			abort(501)
@@ -135,14 +137,14 @@ def AddWayPoint():
 			print "[*]\tNote\tThe first seen node will be the begin node!"
 			begin_node = node_num
 			print "[*]\tNote\t Begin with node ", begin_node
-			node_str.append((node_num, PointToHtml(int(node_num), u'begin', cost_limit)))
+			node_str.append((node_num, PointToHtml(int(node_num), u'begin', int(node_trans), cost_limit)))
 			return redirect(url_for('index'))
 		if node_type == 'keynode':
 			node_num = request.form.get('node_num')
 			cost_limit = request.form.get('cost_limit')
-			if mp.AddKeyPoint(int(node_num), int(cost_limit)):
+			if mp.AddKeyPoint(int(node_num), int(cost_limit), _type_=int(node_trans)):
 				print "Add Key Node ", node_num, " cost limit: ", cost_limit
-				node_str.append((node_num, PointToHtml(int(node_num), node_type, cost_limit)))
+				node_str.append((node_num, PointToHtml(int(node_num), node_type, int(node_trans), cost_limit)))
 				return redirect(url_for('index'))
 			else:
 				abort(501)
@@ -151,7 +153,7 @@ def AddWayPoint():
 			if mp.AddWayPoint(int(node_num)):
 				print "Add Way Node ", node_num
 				resp = make_response(render_template('index.html'))
-				node_str.append((node_num, PointToHtml(int(node_num), node_type, 0)))
+				node_str.append((node_num, PointToHtml(int(node_num), node_type, int(node_trans), 0)))
 				return redirect(url_for('index'))
 			else:
 				abort(501)
@@ -192,7 +194,7 @@ def internal_error(error):
 def connect_db():
 	return sqlite3.connect(DATABASE)
 
-def PointToHtml(num, typ, limit):
+def PointToHtml(num, typ, trans, limit):
 	s = u'<div class="sidebar_element" style="font-size:12px">'
 	if num>=len(point_name):
 		s += u'未知'
@@ -204,6 +206,15 @@ def PointToHtml(num, typ, limit):
 		s += u'<br>'
 		s += u'限制：'
 		s += str(limit)
+		s += u'&nbsp'
+		if trans== 0:
+			s += u'出行方式：走路'
+		elif trans == 1:
+			s += u'出行方式：自行车'
+		elif trans == 2:
+			s += u'出行方式：自驾车'
+		else:
+			return False
 	elif typ==u'waynode':
 		s += u'普通路径点'
 		s += u'<br>'

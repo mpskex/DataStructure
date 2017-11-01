@@ -11,9 +11,9 @@
 	<title>地图导航</title>
 	<!--部署版本-->
 	<!--style type="text/css" media="screen">@import url("{{ url_for('static', filename='style.css')}}");</style-->
-	<!--script type='text/javascript' src="{{ url_for('static', filename='guide.js')}}"></script-->
+	<!--script type='text/javascript' src="{{ url_for('static', filename='showpath.js')}}"></script-->
 	<script type="application/javascript">
-		document.write("<script type='text/javascript' src='"+"{{ url_for('static', filename='guide.js')}}" + "?" + Math.floor(Math.random()*1000000) + "'><" + "/script>"); 
+		document.write("<script type='text/javascript' src='"+"{{ url_for('static', filename='showpath.js')}}" + "?" + Math.floor(Math.random()*1000000) + "'><" + "/script>"); 
 		document.write("<style type='text/css' media='screen'>@import url("+"{{ url_for('static', filename='style.css')}}" + "?" + Math.floor(Math.random()*1000000) + ");</style>"); 
 	</script>
 </head>
