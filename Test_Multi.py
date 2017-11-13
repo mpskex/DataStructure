@@ -6,6 +6,7 @@
 #	Copyright 2017
 
 from package import *
+from package import MultiPath
 
 if __name__ == '__main__':
     g = MultiPath.MultiPath(["map/map_data.npy"])

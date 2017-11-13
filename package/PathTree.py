@@ -47,29 +47,45 @@ class TreeNode(object):
         return str(self.data)
 
 class PathTree(object):
-
-    #   Init function
-    #   --------------------------------------------
-    #   paras:
-    #       root
-    #       child_list
-    #       lastleaf
+    """
+    #   We introduce a Tree Structure to storage
+    #   every path possible
+    #   hierarchy;
+    #       [parent, [child, child]]
+    #       T[0] is parent node
+    #       T[1:n] is child node
+    #   In this case we use structure which is 
+    #   introduce BELOW:
+    #   node structure:
+    #       (node number, current cost)
+    """
     def __init__(self, root, child_list, lastleaf):
+        """
+        #   Init function
+        #   --------------------------------------------
+        #   paras:
+        #       root
+        #       child_list
+        #       lastleaf
         #   only key nodes
+        """
         if child_list == []:
             self.NodeTree = root
             self.lastleaf = lastleaf
         else:
             self.NodeTree = self.CreateTree(root, child_list)
             self.lastleaf = lastleaf
+        self.INFINITE = 9999
 
-    #   Tree Creation
-    #   --------------------------------------------
-    #   paras:
-    #       parent:   parent node
-    #       child_list:   child node list
-    #       lastleaf:   last leaf to be fill
     def CreateTree(self, parent, child_list):
+        """
+        #   Tree Creation
+        #   --------------------------------------------
+        #   paras:
+        #       parent:   parent node
+        #       child_list:   child node list
+        #       lastleaf:   last leaf to be fill
+        """
         if child_list == []:
             return
         return_child_list = []
@@ -81,29 +97,34 @@ class PathTree(object):
                     temp_child_list.remove(k)
             #print temp_child_list
             p = TreeNode(n.data)
+            p.parent = parent
             parent.AddChild(p)
             #print parent.child
             self.CreateTree(p, temp_child_list)
         self.NodeTree = parent
         return parent
 
-    #   update the cost
-    #   --------------------------------------------
-    #   paras:
-    #       node:   root node in sub tree
-    #       num:    count num start
     def UpdateCost(self, root, dist_matrix, num=1):
+        """
+        #   update the cost
+        #   --------------------------------------------
+        #   paras:
+        #       node:   root node in sub tree
+        #       num:    count num start
+        """
         for i in root.child:
             i.cost = root.cost + dist_matrix[i.data][root.data]
             i.depth = num
             self.UpdateCost(i, dist_matrix, num+1)
 
-    #   update the cost
-    #   --------------------------------------------
-    #   paras:
-    #       node:   root node in sub tree
-    #       num:    count num start
     def ReduceTree(self, root, dist_matrix, cost_limit, depth, num=1):
+        """
+        #   update the cost
+        #   --------------------------------------------
+        #   paras:
+        #       node:   root node in sub tree
+        #       num:    count num start
+        """
         for i in root.child[:]:
             total_cost = i.cost + dist_matrix[self.lastleaf.data][i.data]
             print "to ", i.data, " path length is ", total_cost, " limit is : ", cost_limit
@@ -112,11 +133,13 @@ class PathTree(object):
             else:
                 self.ReduceTree(i, dist_matrix, cost_limit, num=num+1, depth=depth)
 
-    #   sort the path tree
-    #   --------------------------------------------
-    #   paras:
-    #       root:   root node of the path tree
     def SortTree(self, root):
+        """
+        #   sort the path tree
+        #   --------------------------------------------
+        #   paras:
+        #       root:   root node of the path tree
+        """
         for i in root.child[:]:
             self.SortTree(i)
         for n in range(len(root.child)):
@@ -128,22 +151,55 @@ class PathTree(object):
                     del root.child[n+1]
                     break
 
-    #   pre-order traveler
-    #   --------------------------------------------
-    #   paras:
-    #       node:   root node in sub tree
-    #       num:    count num start
+    def FindPath(self, node):
+        """
+        #   Shortest Path finder
+        #   --------------------------------------------
+        #   paras:
+        #       node:   root node in sub tree
+        """
+        stack = []
+        min_cost = self.INFINITE
+        min_node = node
+        #   Push the Item into a stack
+        if node.child == []:
+            min_node = node
+        for i in range(0,len(node.child)):
+            stack.append(node.child[i])
+        #   while stack is not empty
+        while(stack):
+            #   pop a item
+            cur_node = stack[-1]
+            del stack[-1]
+            if cur_node.child==[]:
+                if cur_node.cost < min_cost:
+                    min_node = cur_node
+                    min_cost = min_node.cost
+                continue
+            for i in range(0,len(cur_node.child)):
+                stack.append(cur_node.child[i])
+        return min_node
+
     def tLR(self, node, num=1):
+        """
+        #   pre-order traveler
+        #   --------------------------------------------
+        #   paras:
+        #       node:   root node in sub tree
+        #       num:    count num start
+        """
         print num, "\t: ", node.data, "cost is :", node.cost
         if node.child!=[]:
             for i in node.child:
                 self.tLR(i, num+1)
 
-    #   pre-order printer
-    #   --------------------------------------------
-    #   paras:
-    #       None
     def Print(self):
+        """
+        #   pre-order printer
+        #   --------------------------------------------
+        #   paras:
+        #       None
+        """
         print "------------------Path Tree------------------"
         self.tLR(self.NodeTree)
 

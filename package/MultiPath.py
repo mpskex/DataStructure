@@ -1,34 +1,36 @@
 #!/usr/bin/python
 #coding: utf-8
 
-import os
-import re
 import copy
 import numpy as np
 import SinglePath
 import PathTree
 
-#	mpsk
-#	Beijing University of Technology
-#	Copyright 2017
-
-#   For every keypoint i, we choose the BEST path
-#   (depends on strategy), less time/more effciency 
-#   while passing as many nodes as possible in limited 
-#   time
-#   If there are still plenty time left, we would consider
-#   including more nodes to path
-#   Two point type:
-#       keypoint:   limited time
-#       waypoint:   don't care about time
 class MultiPath(object):
+    """
+    #	mpsk
+    #	Beijing University of Technology
+    #	Copyright 2017
 
-    #   the init function is to create floyd map for
-    #   the specified graph G.
-    #   --------------------------------------------
-    #   paras:
-    #       map_path:   path to map data
+    #   For every keypoint i, we choose the BEST path
+    #   (depends on strategy), less time/more effciency 
+    #   while passing as many nodes as possible in limited 
+    #   time
+    #   If there are still plenty time left, we would consider
+    #   including more nodes to path
+    #   Two point type:
+    #       keypoint:   limited time
+    #       waypoint:   don't care about time
+    """
+
     def __init__(self, map_path_list):
+        """
+        #   the init function is to create floyd map for
+        #   the specified graph G.
+        #   --------------------------------------------
+        #   paras:
+        #       map_path:   path to map data
+        """
         #   create single path control path
         self.singlepath_list = []
         for n in map_path_list:
@@ -63,25 +65,31 @@ class MultiPath(object):
         for n in self.waypoints:
             print "\t", n.data, "\n\tcost : ", n.cost
 
-    #   Add KeyPoint
-    #   --------------------------------------------
-    #   paras:
-    #       point:      keypoint node number
-    #       time_cost:  time cost this node limited
     def AddKeyPoint(self, point, time_cost, _type_=0):
+        """
+        #   Add KeyPoint
+        #   --------------------------------------------
+        #   paras:
+        #       point:      keypoint node number
+        #       time_cost:  time cost this node limited
         #   Add node to keypoints list
         #   check if the point is in the waypoint list or keypoint list
+        """
         for n in self.waypoints:
             if n.data == point:
+                print "[!!]\tWarning\tDetected Duplicated Point while create! Ignored!\t[!!]"
                 return False
         for n in self.keypoints:
             if n.data == point:
+                print "[!!]\tWarning\tDetected Duplicated Point while create! Ignored!\t[!!]"
                 return False
         #   Invalid time cost
         if time_cost<=0:
+            print "[!!]\tWarning\tInvalid Cost Input\t[!!]"
             return False
         #   over the map
         if point > self.singlepath_list[_type_].map_size:
+            print "[!!]\tWarning\tPoint Index out of range\t[!!]"
             return False
         p = PathTree.TreeNode(int(point))
         p.cost = 0
@@ -89,13 +97,14 @@ class MultiPath(object):
         self.keypoints.append(p)
         return True
 
-    
-    #   Add WayPoint
-    #   --------------------------------------------
-    #   paras:
-    #       point:      keypoint node number
-    #       time_cost:  time cost this node limited
     def AddWayPoint(self, point):
+        """
+        #   Add WayPoint
+        #   --------------------------------------------
+        #   paras:
+        #       point:      keypoint node number
+        #       time_cost:  time cost this node limited
+        """
         #   Add node to waypoints list
         #   check if the point is in the waypoint list or keypoint list
         for n in self.waypoints:
@@ -111,39 +120,42 @@ class MultiPath(object):
         return True
 
         
-    #   Output a best Macro-route according current strategy
-    #   use recurrent method
-    #   --------------------------------------------
-    #   paras:
-    #       root:       root node of PathTree
-    #       lastleaf:   last leaf node in PathTree
-    def __Macro_Path_Out__(self, root, lastleaf, way_nodes):
-        #   current strategy is to select first path
-        min = self.singlepath_list[0].INFINITE
-        node_cur = root
-        node_last = node_cur
+    def __Macro_Path_Out__(self, tree, lastleaf, way_nodes):
+        """
+        #   Output a best Macro-route according current strategy
+        #   use recurrent method
+        #   --------------------------------------------
+        #   paras:
+        #       root:       root node of PathTree
+        #       lastleaf:   last leaf node in PathTree
+        #   current strategy is to find the shortest path in pathtree
+        """
         temp_path = []
-        while node_cur.child!=[]:
+        min_node = tree.FindPath(tree.NodeTree)
+        node_cur = min_node
+        while(node_cur!=tree.NodeTree):
             temp_path.insert(0, node_cur.data)
-            node_last = node_cur
-            node_cur = node_cur.child[0]
             #   check if the waypoint is included by the macro path
             for n in range(len(way_nodes)):
                 if node_cur.data == way_nodes[n].data:
                     print "[!]Repeated[!] ", way_nodes[n].data
                     del way_nodes[n]
                     break
-        temp_path.insert(0, node_cur.data)
+            node_cur = node_cur.parent
+        temp_path.append(tree.NodeTree.data)
         temp_path.insert(0, lastleaf.data)
+        print "[*]\tPath Tree Result is\t", temp_path
         return temp_path
     
-    #   Output a best Micro-route according current strategy
-    #   use recurrent method
-    #   --------------------------------------------
-    #   paras:
-    #       root:       root node of PathTree
-    #       lastleaf:   last leaf node in PathTree
     def __Micro_Path_Out__(self, root, lastleaf):
+        """
+        #   Output a best Micro-route according current strategy
+        #   use recurrent method
+        #   --------------------------------------------
+        #   paras:
+        #       root:       root node of PathTree
+        #       lastleaf:   last leaf node in PathTree
+        """
         #   current strategy is to select first path
         min = self.singlepath_list[0].INFINITE
         node_cur = root
@@ -155,12 +167,15 @@ class MultiPath(object):
             node_cur = node_cur.child[0]
         temp_path.insert(0, node_cur.data)
         temp_path.insert(0, lastleaf.data)
+        return temp_path
 
-    #   MultiPath
-    #   --------------------------------------------
-    #   paras:
-    #       node_i:     start point
     def CalcMultiPath(self, point_i, depth):
+        """
+        #   MultiPath
+        #   --------------------------------------------
+        #   paras:
+        #       node_i:     start point
+        """
         #   Add the begin node to the key node list
         key_nodes = copy.deepcopy(self.keypoints)
         key_nodes.insert(0, PathTree.TreeNode(point_i))
@@ -169,8 +184,8 @@ class MultiPath(object):
         key_nodes.append(t_dst)
         way_nodes = copy.deepcopy(self.waypoints)
         macro_path = []
-        print "\n[*] Stage 1 : Keynodes:", len(key_nodes), " Waynodes: ", len(way_nodes)
         if len(key_nodes)>1:
+            print "\n[*] Stage 1 : Keynodes:", len(key_nodes), " Waynodes: ", len(way_nodes)
             #   DO
             path = []
             #   Node should be sort by time cost
@@ -179,10 +194,17 @@ class MultiPath(object):
             macro_path = []
             #   Do the Path Tree Iterations
             #   for every key point with limited time
-            while len(key_nodes) > 1:
+            while len(key_nodes) > 1 and len(way_nodes) > 0:
                 #   set source and destination
-                node_src = key_nodes[0]
-                node_dst = key_nodes[1]
+                if len(key_nodes)>1:
+                    node_src = key_nodes[0]
+                    node_dst = key_nodes[1]
+                elif len(key_nodes)<=1 and len(way_nodes)>0:
+                    #   if the way node is still not empty 
+                    node_src = key_nodes[0]
+                    node_dst = PathTree.TreeNode(point_i)
+                else:
+                    return False
                 if node_src.data == node_dst.data and node_src.data != point_i:
                     del key_nodes[0]
                     print "[!!]\tWarning\tDetected Duplicated Point! Ignored!\t[!!]"
@@ -202,43 +224,9 @@ class MultiPath(object):
                 ptree.Print()
                 ptree.SortTree(ptree.NodeTree)
                 ptree.Print()
-                macro_path.append(self.__Macro_Path_Out__(ptree.NodeTree, node_src, way_nodes))
-                #   code here
+                macro_path.append(self.__Macro_Path_Out__(ptree, node_src, way_nodes))
                 del key_nodes[0]
 
-        #   if the way node is still not empty 
-        #   after the keynode iteration
-        print "\n[*] Stage 2 : Keynodes:", len(key_nodes), " Waynodes: ", len(way_nodes)
-        if len(way_nodes)>0:
-            #   Choose the nearest way point from the last key point
-            if len(key_nodes)<=0:
-                print "[!!]\tWarnnig:\tKey Nodes not enough! Abort!\t[!!]"
-                return False
-            else:
-                temp_path = [key_nodes[0].data]
-                node_src = key_nodes[0]
-            node_cur = node_src
-            for i in way_nodes:
-                print "\t\t", i.data
-            print "\t from key point : ", node_src.data
-            while len(way_nodes)>1:
-                temp_min_node_num = self.INFINITE
-                temp_min_dist = self.INFINITE
-                for n in range(len(way_nodes)):
-                    #   from the original data map
-                    if self.singlepath_list[node_src._type_].dist[node_cur.data][way_nodes[n].data] < temp_min_dist:
-                        temp_min_node_num = n
-                        temp_min_dist = self.singlepath_list[node_src._type_].dist[node_cur.data][way_nodes[n].data]
-                temp_path.append(way_nodes[temp_min_node_num].data)
-                node_cur = copy.deepcopy(way_nodes[temp_min_node_num])
-                if temp_min_node_num >= len(way_nodes):
-                    print "[!!]\tError!\tway node list out of range!\t[!!]"
-                    return False
-                else:
-                    del way_nodes[temp_min_node_num]
-            temp_path.append(way_nodes[0].data)
-            print "\t\ttemp path is ", temp_path
-            macro_path.append(temp_path)
         print macro_path
 
         #   concenate the path pieces into continuos path sequence
