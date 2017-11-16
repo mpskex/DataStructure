@@ -35,7 +35,7 @@ def main():
 	np.save("map_data", array)
 	print map_data
 	print "Loaded Map is "
-	print np.load("map_data.npy")
+	print np.load("test_data.npy")
 	return 0
 
 if __name__ == '__main__':

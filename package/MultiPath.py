@@ -132,13 +132,14 @@ class MultiPath(object):
         """
         temp_path = []
         min_node = tree.FindPath(tree.NodeTree)
+        print "\tminnode is ", min_node.data
         node_cur = min_node
         while(node_cur!=tree.NodeTree):
             temp_path.insert(0, node_cur.data)
             #   check if the waypoint is included by the macro path
             for n in range(len(way_nodes)):
                 if node_cur.data == way_nodes[n].data:
-                    print "[!]Repeated[!] ", way_nodes[n].data
+                    print "\t[!]\tRepeated\ts[!] ", way_nodes[n].data
                     del way_nodes[n]
                     break
             node_cur = node_cur.parent
@@ -184,27 +185,30 @@ class MultiPath(object):
         key_nodes.append(t_dst)
         way_nodes = copy.deepcopy(self.waypoints)
         macro_path = []
+        
         if len(key_nodes)>1:
-            print "\n[*] Stage 1 : Keynodes:", len(key_nodes), " Waynodes: ", len(way_nodes)
             #   DO
-            path = []
             #   Node should be sort by time cost
-            pathtrees = []
             #   Macro Path list
             macro_path = []
             #   Do the Path Tree Iterations
             #   for every key point with limited time
-            while len(key_nodes) > 1 and len(way_nodes) > 0:
+            while len(key_nodes) > 1 or len(way_nodes) > 0:
                 #   set source and destination
+
+                print "--------------- New Iter ---------------"
+                print "KeyPoints:"
+                for n in key_nodes:
+                    print "\t", n.data, "\n\tcost : ", n.cost, "\n\tcost limit : ", n.cost_limit
+                print "WayPoints:"
+                for n in way_nodes:
+                    print "\t", n.data, "\n\tcost : ", n.cost
+
                 if len(key_nodes)>1:
                     node_src = key_nodes[0]
                     node_dst = key_nodes[1]
-                elif len(key_nodes)<=1 and len(way_nodes)>0:
-                    #   if the way node is still not empty 
-                    node_src = key_nodes[0]
-                    node_dst = PathTree.TreeNode(point_i)
                 else:
-                    return False
+                    break
                 if node_src.data == node_dst.data and node_src.data != point_i:
                     del key_nodes[0]
                     print "[!!]\tWarning\tDetected Duplicated Point! Ignored!\t[!!]"
@@ -220,11 +224,17 @@ class MultiPath(object):
                 ptree.UpdateCost(ptree.NodeTree, self.singlepath_list[node_src._type_].dist)
                 ptree.Print()
                 print "[*]\tPath depth limit is ", depth
+                print "[*]\tReducing branches..."
                 ptree.ReduceTree(ptree.NodeTree, self.singlepath_list[node_src._type_].dist, node_dst.cost_limit, depth)
                 ptree.Print()
+                print "[*]\tTree reduced!\n"
+                print "[*]\tSorting Tree..."
                 ptree.SortTree(ptree.NodeTree)
                 ptree.Print()
+                print "[*]\tTree sorted!\n"
+                print "[*]\tFinding best routine..."
                 macro_path.append(self.__Macro_Path_Out__(ptree, node_src, way_nodes))
+                print "[*]\tRoutine found!"
                 del key_nodes[0]
 
         print macro_path

@@ -188,7 +188,7 @@ class PathTree(object):
         #       node:   root node in sub tree
         #       num:    count num start
         """
-        print num, "\t: ", node.data, "cost is :", node.cost
+        print "|| lv.", num-1, " : ", node.data, "| cost is :", node.cost, "||"
         if node.child!=[]:
             for i in node.child:
                 self.tLR(i, num+1)
@@ -200,8 +200,9 @@ class PathTree(object):
         #   paras:
         #       None
         """
-        print "------------------Path Tree------------------"
+        print "---*******Path Tree*******---"
         self.tLR(self.NodeTree)
+        print "---*******Tree Ends*******---\n"
 
 if __name__ == '__main__':
     pt = PathTree(TreeNode(0),[TreeNode(2),TreeNode(3),TreeNode(4)], TreeNode(5))
