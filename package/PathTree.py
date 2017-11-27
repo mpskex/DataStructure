@@ -119,7 +119,7 @@ class PathTree(object):
 
     def ReduceTree(self, root, dist_matrix, cost_limit, depth, num=1):
         """
-        #   update the cost
+        #   cut the branch which mismatch the limit of cost
         #   --------------------------------------------
         #   paras:
         #       node:   root node in sub tree
