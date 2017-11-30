@@ -5,10 +5,13 @@
 #	Beijing University of Technology
 #	Copyright 2017
 
+import os
+import math
+import time
 from package import *
 from package import MultiPath
 
-if __name__ == '__main__':
+def Test():
     g = MultiPath.MultiPath(["map/test_data.npy"])
     #g.AddKeyPoint(2, 10)
     g.AddKeyPoint(2, 30)
@@ -19,3 +22,15 @@ if __name__ == '__main__':
     #g.AddWayPoint(4)
     #g.PrintStatus()
     print "Final result:\t", g.CalcMultiPath(0, depth=3)
+
+if __name__ == '__main__':
+    sum =0
+    for i in range(100):
+        a = time.time()
+        Test()
+        b = time.time()
+        eval = math.floor((b - a)*100000)/100
+        sum += eval
+        print "Cost: ", eval, " ms."
+    print "=============Result============="
+    print "Average cost:\t", sum /100, " ms."
