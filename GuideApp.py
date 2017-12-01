@@ -162,6 +162,10 @@ def AddWayPoint():
 	else:
 		return redirect(url_for('index'))
 
+@app.route('/papers', methods = ['POST','GET'])
+def papers():
+	return render_template('paper.html')
+
 @app.route('/login')
 def login():
 	return render_template('login.html')
