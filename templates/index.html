@@ -6,6 +6,7 @@
 */
 -->
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>地图导航</title>
@@ -13,44 +14,57 @@
 	<!--style type="text/css" media="screen">@import url("{{ url_for('static', filename='style.css')}}");</style-->
 	<!--script type='text/javascript' src="{{ url_for('static', filename='guide.js')}}"></script-->
 	<script type="application/javascript">
-		document.write("<script type='text/javascript' src='"+"{{ url_for('static', filename='guide.js')}}" + "?" + Math.floor(Math.random()*1000000) + "'><" + "/script>"); 
-		document.write("<style type='text/css' media='screen'>@import url("+"{{ url_for('static', filename='style.css')}}" + "?" + Math.floor(Math.random()*1000000) + ");</style>"); 
+		document.write("<script type='text/javascript' src='" + "{{ url_for('static', filename='guide.js')}}" + "?" + Math.floor(Math.random() * 1000000) + "'><" + "/script>");
+		document.write("<style type='text/css' media='screen'>@import url(" + "{{ url_for('static', filename='style.css')}}" + "?" + Math.floor(Math.random() * 1000000) + ");</style>"); 
 	</script>
 </head>
+
 <body>
 	<div>
 		<ul class="option" id="option" hidden align="left">
-			<div class="opt_element"><i class="point name"></i>名字<div class="opt_attribute" id="pname">None</div></div>
+			<div class="opt_element">
+				<i class="point name"></i>名字
+				<div class="opt_attribute" id="pname">None</div>
+			</div>
 			<div class="opt_element">
 				<i class="point type"></i>类型
-				<select id="ptype"> 
-					<option value="waynode">普通路径点</option> 
-					<option value="keynode">带时间限制的路径点</option> 
-				</select> 
+				<select id="ptype">
+					<option value="waynode">普通路径点</option>
+					<option value="keynode">带时间限制的路径点</option>
+				</select>
 			</div>
-			<div class="opt_element"><i class="point trans"></i>出行方式
-				<select id="ptrans"> 
-					<option value="0">走路</option> 
-					<option value="1">自行车</option> 
-					<option value="2">自驾车</option> 
-				</select> 
+			<div class="opt_element">
+				<i class="point trans"></i>出行方式
+				<select id="ptrans">
+					<option value="0">走路</option>
+					<option value="1">自行车</option>
+					<option value="2">自驾车</option>
+				</select>
 			</div>
-			<div class="opt_element"><i class="point limit"></i>限制
+			<div class="opt_element">
+				<i class="point limit"></i>限制
 				<div id="plimit_value" style="float: right;">0</div>
-				<input type="range" id="plimit" min="0" max="100" onmouseup="GetLimitValue();"/>
+				<input type="range" id="plimit" min="0" max="100" onmouseup="GetLimitValue();" />
 			</div>
 			<div>
-				<div class="opt_button" id="opt_btn_add"><div style="padding: 4px 4px 4px 20px" onclick = "CheckInput();">添加</div></div>
-				<div class="opt_button" id="opt_btn_rm"><div style="padding: 4px 4px 4px 20px" onclick = "RemovePoint();">删除</div></div>
+				<div class="opt_button" id="opt_btn_add">
+					<div style="padding: 4px 4px 4px 20px" onclick="CheckInput();">添加</div>
+				</div>
+				<div class="opt_button" id="opt_btn_rm">
+					<div style="padding: 4px 4px 4px 20px" onclick="RemovePoint();">删除</div>
+				</div>
 			</div>
 		</ul>
 		<div class="content">
 			<div class="loginbar" align="right">
-				<div style="background: white;">中继节点：<div id="depth_num" style="background: white;">3</div></div><input type="range" id="dlimit"  value = "3" min="1" max="20" onmouseup=
-				"document.getElementById('depth_num').innerHTML=document.getElementById('dlimit').value;document.getElementById('path_depth').value=document.getElementById('dlimit').value;">
-				<input type="button" value="ShowMePath" class="btn2" onclick="document.getElementById('pform').submit();"/>
-				<input type="button" value="Login" class="btn2" onclick="window.location.href='login';"/>
-				<input type="button" value="Clear" class="btn2" onclick="window.location.href='removeall';alert('已经清空所有输入！');"/>
+				<div style="background: white;">中继节点：
+					<div id="depth_num" style="background: white;">3</div>
+				</div>
+				<input type="range" id="dlimit" value="3" min="1" max="20" onmouseup="document.getElementById('depth_num').innerHTML=document.getElementById('dlimit').value;document.getElementById('path_depth').value=document.getElementById('dlimit').value;">
+				<input type="button" value="显示路径！" class="btn2" onclick="document.getElementById('pform').submit();" />
+				<input type="button" value="登陆" class="btn2" onclick="window.location.href='login';" disabled="disabled" />
+				<input type="button" value="帮助" class="btn2" onclick="window.location.href='help';" />
+				<input type="button" value="清空" class="btn2" onclick="window.location.href='removeall';alert('已经清空所有输入！');" />
 			</div>
 			<div class="map_mask">
 			</div>
@@ -58,7 +72,7 @@
 				<svg class="node_holder" xmlns="http://www.w3.org/2000/svg" version="1.1" width=907 height=622>
 					<defs>
 						<filter id="Gaussian_Blur">
-						<feGaussianBlur in="SourceGraphic" stdDeviation="0.7" />
+							<feGaussianBlur in="SourceGraphic" stdDeviation="0.7" />
 						</filter>
 					</defs>
 					{{ path|safe }}
@@ -74,7 +88,7 @@
 				<svg id="path_holder" class="node_holder" xmlns="http://www.w3.org/2000/svg" version="1.1" width=907 height=622>
 					<defs>
 						<filter id="Gaussian_Blur">
-						<feGaussianBlur in="SourceGraphic" stdDeviation="0.7" />
+							<feGaussianBlur in="SourceGraphic" stdDeviation="0.7" />
 						</filter>
 					</defs>
 					{{ path|safe }}
@@ -89,7 +103,7 @@
 				<svg id="node" class="node_holder" xmlns="http://www.w3.org/2000/svg" version="1.1" width=907 height=622>
 					<defs>
 						<filter id="Gaussian_Blur">
-						<feGaussianBlur in="SourceGraphic" stdDeviation="0.7" />
+							<feGaussianBlur in="SourceGraphic" stdDeviation="0.7" />
 						</filter>
 					</defs>
 					<!--这里是路径写入点-->
@@ -97,17 +111,23 @@
 			</div>
 			<div align="center">
 				<form id="nform" action="/addpoint" method="post" hidden>
-					<input type="text" name="node_type" id="node_type" value="keynode"><br>
-					<input type="text" name="node_num" id="node_num" value="1"><br>
-					<input type="text" name="node_trans" id="node_trans" value="0"><br>
-					<input type="text" name="cost_limit" id="cost_limit" value="10"><br>
-					<input type="button" value="提交" class="btn2" onclick = "CheckInput();" />
+					<input type="text" name="node_type" id="node_type" value="keynode">
+					<br>
+					<input type="text" name="node_num" id="node_num" value="1">
+					<br>
+					<input type="text" name="node_trans" id="node_trans" value="0">
+					<br>
+					<input type="text" name="cost_limit" id="cost_limit" value="10">
+					<br>
+					<input type="button" value="提交" class="btn2" onclick="CheckInput();" />
 				</form>
 				<form id="rform" action="/remove" method="post" hidden>
-					<input type="text" name="node_num_r" id="node_num_r" value="-1"><br>
+					<input type="text" name="node_num_r" id="node_num_r" value="-1">
+					<br>
 				</form>
 				<form id="pform" action="/showpath" method="post" hidden>
-					<input type="text" name="path_depth" id="path_depth" value="3"><br>
+					<input type="text" name="path_depth" id="path_depth" value="3">
+					<br>
 				</form>
 			</div>
 		</div>
@@ -121,4 +141,5 @@
 		</div>
 	</div>
 </body>
+
 </html>

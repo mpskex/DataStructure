@@ -116,6 +116,12 @@ window.onload=function(){
     var t1 = window.setInterval(AnimatedPath, 200); 
 
     //  按钮事件
+    document.getElementById("opt_btn_tip").onmouseover = function(e){
+        document.getElementById("opt_btn_tip").style.background = "#7869c3";
+    }
+    document.getElementById("opt_btn_tip").onmouseout = function(e){
+        document.getElementById("opt_btn_tip").style.background = "#8f8f8f";
+    }
     document.getElementById("opt_btn_add").onmouseover = function(e){
         document.getElementById("opt_btn_add").style.background = "#7869c3";
     }

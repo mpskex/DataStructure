@@ -131,7 +131,10 @@ class MultiPath(object):
         #   current strategy is to find the shortest path in pathtree
         """
         temp_path = []
-        min_node = tree.FindPath(tree.NodeTree)
+        out_of_limit = False
+        min_node, min_cost = tree.FindPath(tree.NodeTree)
+        if min_cost > lastleaf.cost_limit:
+            out_of_limit = True
         print "\tminnode is ", min_node.data
         node_cur = min_node
         while(node_cur!=tree.NodeTree):
@@ -146,7 +149,7 @@ class MultiPath(object):
         temp_path.append(tree.NodeTree.data)
         temp_path.insert(0, lastleaf.data)
         print "[*]\tPath Tree Result is\t", temp_path
-        return temp_path
+        return temp_path, out_of_limit
     
     def __Micro_Path_Out__(self, root, lastleaf):
         """
@@ -180,11 +183,14 @@ class MultiPath(object):
         #   Add the begin node to the key node list
         key_nodes = copy.deepcopy(self.keypoints)
         key_nodes.insert(0, PathTree.TreeNode(point_i))
+        key_nodes[0].cost_limit = self.INFINITE
         t_dst = PathTree.TreeNode(point_i)
         t_dst.cost_limit = self.INFINITE
         key_nodes.append(t_dst)
         way_nodes = copy.deepcopy(self.waypoints)
         macro_path = []
+        #   超时
+        out_flag = False
         
         if len(key_nodes)>1:
             #   DO
@@ -233,7 +239,9 @@ class MultiPath(object):
                 ptree.Print()
                 print "[*]\tTree sorted!\n"
                 print "[*]\tFinding best routine..."
-                macro_path.append(self.__Macro_Path_Out__(ptree, node_src, way_nodes))
+                t, ool = self.__Macro_Path_Out__(ptree, node_src, way_nodes)
+                out_flag = ool or out_flag
+                macro_path.append(t)
                 print "[*]\tRoutine found!"
                 del key_nodes[0]
 
@@ -270,7 +278,7 @@ class MultiPath(object):
             tag_path.append(tag_temp)
             del micro_path[0]
 
-        return  tag_path
+        return  tag_path, out_flag
 
 
 if __name__ == '__main__':

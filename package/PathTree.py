@@ -178,7 +178,7 @@ class PathTree(object):
                 continue
             for i in range(0,len(cur_node.child)):
                 stack.append(cur_node.child[i])
-        return min_node
+        return min_node, min_node.cost
 
     def tLR(self, node, num=1):
         """

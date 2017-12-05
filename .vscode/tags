@@ -15,7 +15,7 @@ FindPath	../package/PathTree.py	/^    def FindPath(self, node):$/;"	kind:member	
 Flask	../GuideApp.py	/^from flask import Flask, request, url_for, render_template, make_response$/;"	kind:namespace	line:9
 GuideApp.py	../GuideApp.py	1;"	kind:file	line:1
 INFINITE	../tools/genMap.py	/^INFINITE = 9999$/;"	kind:variable	line:11
-MultiPath	../Test_Multi.py	/^from package import MultiPath$/;"	kind:namespace	line:9
+MultiPath	../Test_Multi.py	/^from package import MultiPath$/;"	kind:namespace	line:12
 MultiPath	../package/MultiPath.py	/^class MultiPath(object):$/;"	kind:class	line:9
 MultiPath.py	../package/MultiPath.py	1;"	kind:file	line:1
 PathToHtml	../GuideApp.py	/^def PathToHtml(n_a, n_b, color):$/;"	kind:function	line:231
@@ -40,6 +40,7 @@ SinglePath	../package/PathTree.py	/^import SinglePath$/;"	kind:namespace	line:8
 SinglePath	../package/SinglePath.py	/^class SinglePath(object):$/;"	kind:class	line:11
 SinglePath.py	../package/SinglePath.py	1;"	kind:file	line:1
 SortTree	../package/PathTree.py	/^    def SortTree(self, root):$/;"	kind:member	line:136
+Test	../Test_Multi.py	/^def Test():$/;"	kind:function	line:14
 Test_Multi.py	../Test_Multi.py	1;"	kind:file	line:1
 Test_Single.py	../Test_Single.py	1;"	kind:file	line:1
 TreeNode	../package/PathTree.py	/^class TreeNode(object):$/;"	kind:class	line:32
@@ -54,13 +55,15 @@ __init__	../package/PathTree.py	/^    def __init__(self, data):$/;"	kind:member	
 __init__	../package/PathTree.py	/^    def __init__(self, root, child_list, lastleaf):$/;"	kind:member	line:62
 __init__	../package/SinglePath.py	/^    def __init__(self, map_path):$/;"	kind:member	line:22
 __init__.py	../package/__init__.py	1;"	kind:file	line:1
+a	../Test_Multi.py	/^        a = time.time()$/;"	kind:variable	line:29
 abort	../GuideApp.py	/^from flask import abort, redirect$/;"	kind:namespace	line:10
 app	../GuideApp.py	/^app = Flask(__name__)$/;"	kind:variable	line:17
+b	../Test_Multi.py	/^        b = time.time()$/;"	kind:variable	line:31
 begin_node	../GuideApp.py	/^begin_node = ''$/;"	kind:variable	line:50
 connect_db	../GuideApp.py	/^def connect_db():$/;"	kind:function	line:194
 copy	../package/MultiPath.py	/^import copy$/;"	kind:namespace	line:4
 copy	../package/PathTree.py	/^import copy$/;"	kind:namespace	line:6
-g	../Test_Multi.py	/^    g = MultiPath.MultiPath(["map\/test_data.npy"])$/;"	kind:variable	line:12
+eval	../Test_Multi.py	/^        eval = math.floor((b - a)*100000)\/100$/;"	kind:variable	line:32
 g	../Test_Single.py	/^    g = SinglePath.SinglePath("map\/map_data.npy")$/;"	kind:variable	line:11
 g	../package/MultiPath.py	/^    g = MultiPath(["map_data.npy"])$/;"	kind:variable	line:277
 g	../package/SinglePath.py	/^    g = SinglePath("map_data.npy")$/;"	kind:variable	line:129
@@ -75,12 +78,14 @@ li	../test.py	/^li = [0,9,4,2,6,8,3,1]$/;"	kind:variable	line:4
 login	../GuideApp.py	/^def login():$/;"	kind:function	line:166
 main	../tools/genMap.py	/^def main():$/;"	kind:function	line:13
 make_response	../GuideApp.py	/^from flask import Flask, request, url_for, render_template, make_response$/;"	kind:namespace	line:9
+math	../Test_Multi.py	/^import math$/;"	kind:namespace	line:9
 mp	../GuideApp.py	/^mp = MultiPath.MultiPath(["map\/map_data.npy"])$/;"	kind:variable	line:18
 node_str	../GuideApp.py	/^node_str = []$/;"	kind:variable	line:48
 np	../package/MultiPath.py	/^import numpy as np$/;"	kind:namespace	line:5
 np	../package/PathTree.py	/^import numpy as np$/;"	kind:namespace	line:7
 np	../package/SinglePath.py	/^import numpy as np$/;"	kind:namespace	line:4
 np	../tools/genMap.py	/^import numpy as np$/;"	kind:namespace	line:9
+os	../Test_Multi.py	/^import os$/;"	kind:namespace	line:8
 os	../package/PathTree.py	/^import os$/;"	kind:namespace	line:4
 os	../package/SinglePath.py	/^import os$/;"	kind:namespace	line:2
 os	../tools/genMap.py	/^import os$/;"	kind:namespace	line:8
@@ -97,8 +102,10 @@ request	../GuideApp.py	/^from flask import Flask, request, url_for, render_templ
 setData	../package/SinglePath.py	/^    def setData(self, data):$/;"	kind:member	line:73
 sort	../test.py	/^def sort(li):$/;"	kind:function	line:6
 sqlite3	../GuideApp.py	/^import sqlite3$/;"	kind:namespace	line:8
+sum	../Test_Multi.py	/^    sum =0$/;"	kind:variable	line:27
 tLR	../package/PathTree.py	/^    def tLR(self, node, num=1):$/;"	kind:member	line:183
 test	../GuideApp.py	/^def test():$/;"	kind:function	line:170
 test.py	../test.py	1;"	kind:file	line:1
+time	../Test_Multi.py	/^import time$/;"	kind:namespace	line:10
 toString	../package/PathTree.py	/^    def toString(self):$/;"	kind:member	line:46
 url_for	../GuideApp.py	/^from flask import Flask, request, url_for, render_template, make_response$/;"	kind:namespace	line:9

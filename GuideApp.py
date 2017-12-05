@@ -99,7 +99,7 @@ def ShowPath():
 		mp.PrintStatus()
 		if len(node_str)<=1:
 			abort(505)
-		k = mp.CalcMultiPath(int(node_str[0][0]), int(depth))
+		k, outflag = mp.CalcMultiPath(int(node_str[0][0]), int(depth))
 		if k == False or k == None:
 			abort(505)
 		print "[*]\tpath is :", k
@@ -109,7 +109,10 @@ def ShowPath():
 		ps = ""
 		for n in k:
 			ps += PathToHtml(n[0], n[1], u'green')
-		return render_template('showpath.html', nodes=ns, path=ps)
+		if outflag:
+			return render_template('showpath.html', nodes=ns, path=ps, TipsFlag="")
+		else:	
+			return render_template('showpath.html', nodes=ns, path=ps, TipsFlag="hidden")
 	else:
 		abort(502)
 
@@ -165,6 +168,10 @@ def AddWayPoint():
 @app.route('/papers', methods = ['POST','GET'])
 def papers():
 	return render_template('paper.html')
+
+@app.route('/help', methods = ['POST','GET'])
+def help():
+	return render_template('help.html')
 
 @app.route('/login')
 def login():
