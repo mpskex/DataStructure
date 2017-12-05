@@ -12,7 +12,10 @@ from package import *
 from package import MultiPath
 
 
-def Test_temp():
+def Test_OOL():
+    """
+    "Out of limit" test
+    """
     g = MultiPath.MultiPath(["map/test_data.npy"])
     g.AddKeyPoint(2, 1)
     path, ool_flag = g.CalcMultiPath(0, depth=3)
@@ -23,6 +26,9 @@ def Test_temp():
 
 
 def Test():
+    """
+    Regular test
+    """
     g = MultiPath.MultiPath(["map/test_data.npy"])
     #g.AddKeyPoint(2, 10)
     g.AddKeyPoint(2, 30)
@@ -42,7 +48,8 @@ def Test():
 if __name__ == '__main__':
     sum = 0
     a = time.time()
-    Test_temp()
+    Test()
+    Test_OOL()
     b = time.time()
     eval = math.floor((b - a) * 100000) / 100
     sum += eval

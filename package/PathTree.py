@@ -163,6 +163,8 @@ class PathTree(object):
         """
         stack = []
         min_cost = self.INFINITE
+        #   if it is straght-to
+        #   then return the straight-to dist
         min_cost_r = self.straight_dist
         min_node = node
         #   Push the Item into a stack
@@ -172,8 +174,11 @@ class PathTree(object):
             stack.append(node.child[i])
         #   while stack is not empty
         while(stack):
-            #   pop a item
+            #   if it has child
+            #   other word the tree is not empty
+            #   then get the smallest dist
             min_cost_r = self.INFINITE
+            #   pop a item
             cur_node = stack[-1]
             del stack[-1]
             if cur_node.child==[]:

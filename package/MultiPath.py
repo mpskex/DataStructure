@@ -6,11 +6,12 @@ import numpy as np
 import SinglePath
 import PathTree
 
+#	mpsk
+#	Beijing University of Technology
+#	Copyright 2017
+
 class MultiPath(object):
     """
-    #	mpsk
-    #	Beijing University of Technology
-    #	Copyright 2017
 
     #   For every keypoint i, we choose the BEST path
     #   (depends on strategy), less time/more effciency 
@@ -133,6 +134,7 @@ class MultiPath(object):
         temp_path = []
         out_of_limit = False
         min_node, min_cost = tree.FindPath(tree.NodeTree)
+        #   print out the straght-to or current path's length
         print "|| min_cost ", min_cost, " | limit: ", tree.NodeTree.cost_limit, " |"
         if min_cost > tree.NodeTree.cost_limit:
             out_of_limit = True
@@ -240,6 +242,7 @@ class MultiPath(object):
                 ptree.Print()
                 print "[*]\tTree sorted!\n"
                 print "[*]\tFinding best routine..."
+                #   get the "out of limit" flag
                 t, ool = self.__Macro_Path_Out__(ptree, node_src, way_nodes)
                 out_flag = ool or out_flag
                 macro_path.append(t)

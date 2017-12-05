@@ -5,6 +5,12 @@
 #	Beijing University of Technology
 #	Copyright 2017
 
+#   POST TYPE
+#       node type:   keynode/waynode
+#       node name:  <nodenum>
+#       cost limit: <costlimit>
+#       &type=keynode&node=1
+
 import sqlite3
 from flask import Flask, request, url_for, render_template, make_response
 from flask import abort, redirect
@@ -16,6 +22,9 @@ DATABASE = 'database.db'
 #   Initialize the objects
 app = Flask(__name__)
 mp = MultiPath.MultiPath(["map/map_data.npy"])
+
+#	The coordinates is for
+#	generating the path using svg
 point_cord=[
 	"491 99",
     "418 412",
@@ -33,6 +42,8 @@ point_cord=[
 	"606 389",
 	"331 245"
 	]
+#	The name is for 
+# 	string in sidebar
 point_name=[
     u'宿舍',
     u'美食园',
@@ -49,17 +60,12 @@ node_str = []
 path_str = ""
 begin_node = ''
 
-#url_for('static', filename='style.css')
-
-#   POST TYPE
-#       node type:   keynode/waynode
-#       node name:  <nodenum>
-#       cost limit: <costlimit>
-#       &type=keynode&node=1
-
 @app.route('/')
 @app.route('/index', methods = ['POST', 'GET'])
 def index():
+	"""
+	Index
+	"""
 	if request.method == 'GET':
 		s = ""
 		for n in node_str:
@@ -70,6 +76,9 @@ def index():
 
 @app.route('/remove', methods = ['POST'])
 def Remove():
+	"""
+	Remove single point
+	"""
 	if request.method == 'POST':
 		num = request.form.get('node_num_r')
 		if not mp.RemovePoint(int(num)):
@@ -89,6 +98,9 @@ def Remove():
 
 @app.route('/showpath', methods = ['POST'])
 def ShowPath():
+	"""
+	Calculate & show the path
+	"""
 	if len(node_str)>1:
 		if not mp.AddKeyPoint(node_str[0][0], 9999):
 			print "[!!]\tFailed to create dst node!\t[!!]"
@@ -109,15 +121,22 @@ def ShowPath():
 		ps = ""
 		for n in k:
 			ps += PathToHtml(n[0], n[1], u'green')
+		#	judge whether the procedure 
+		#	trigger the "out of limit" flag
 		if outflag:
 			return render_template('showpath.html', nodes=ns, path=ps, TipsFlag="")
-		else:	
+		else:
+			#	if the flag is not on
+			#	the hide the tip
 			return render_template('showpath.html', nodes=ns, path=ps, TipsFlag="hidden")
 	else:
 		abort(502)
 
 @app.route('/removeall', methods = ['GET'])
 def RemoveAll():
+	"""
+	Clean all
+	"""
 	mp.RemovePoints()
 	node_str[:]=[]
 	print "[!]\tCleared all points"
@@ -125,18 +144,25 @@ def RemoveAll():
 
 @app.route('/addpoint', methods = ['POST','GET'])
 def AddWayPoint():
+	"""
+	Add a point (keypoint/waypoint)
+	"""
 	if request.method == 'POST':
+		#	get the post data
 		node_num = request.form.get('node_num')
 		node_type = request.form.get('node_type')
 		node_trans = request.form.get('node_trans')
 		cost_limit = request.form.get('cost_limit')
+		#	print it
 		print "[*]\tRecieved Post"
 		print "\tPosted Node Number is : ", request.form.get('node_num')
 		print "\tPosted Node Transport is : ", request.form.get('node_trans')
 		print "\tPosted Node Cost Limit is : ", request.form.get('cost_limit')
 		if not (node_num.isdigit() and cost_limit.isdigit()):
+			#	invalid post
 			abort(501)
 		if len(node_str)==0:
+			#	treat the first node as start node
 			print "[*]\tNote\tThe first seen node will be the begin node!"
 			begin_node = node_num
 			print "[*]\tNote\t Begin with node ", begin_node

@@ -3,6 +3,10 @@ import os
 import re
 import numpy as np
 
+#	mpsk
+#	Beijing University of Technology
+#	Copyright 2017
+
 #	Map Structure:
 #	the dist_map[i][j] is the distance between node i and node j
 #	the neigh_map[i][j] means that the 
