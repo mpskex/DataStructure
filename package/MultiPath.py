@@ -133,7 +133,8 @@ class MultiPath(object):
         temp_path = []
         out_of_limit = False
         min_node, min_cost = tree.FindPath(tree.NodeTree)
-        if min_cost > lastleaf.cost_limit:
+        print "|| min_cost ", min_cost, " | limit: ", tree.NodeTree.cost_limit, " |"
+        if min_cost > tree.NodeTree.cost_limit:
             out_of_limit = True
         print "\tminnode is ", min_node.data
         node_cur = min_node

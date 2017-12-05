@@ -69,6 +69,7 @@ class PathTree(object):
         #       lastleaf
         #   only key nodes
         """
+        self.straight_dist = 0
         if child_list == []:
             self.NodeTree = root
             self.lastleaf = lastleaf
@@ -116,6 +117,8 @@ class PathTree(object):
             i.cost = root.cost + dist_matrix[i.data][root.data]
             i.depth = num
             self.UpdateCost(i, dist_matrix, num+1)
+        if num==1:
+            self.straight_dist = dist_matrix[self.lastleaf.data][root.data]
 
     def ReduceTree(self, root, dist_matrix, cost_limit, depth, num=1):
         """
@@ -160,6 +163,7 @@ class PathTree(object):
         """
         stack = []
         min_cost = self.INFINITE
+        min_cost_r = self.straight_dist
         min_node = node
         #   Push the Item into a stack
         if node.child == []:
@@ -169,6 +173,7 @@ class PathTree(object):
         #   while stack is not empty
         while(stack):
             #   pop a item
+            min_cost_r = self.INFINITE
             cur_node = stack[-1]
             del stack[-1]
             if cur_node.child==[]:
@@ -176,9 +181,10 @@ class PathTree(object):
                     min_node = cur_node
                     min_cost = min_node.cost
                 continue
+            min_cost_r = min_cost
             for i in range(0,len(cur_node.child)):
                 stack.append(cur_node.child[i])
-        return min_node, min_node.cost
+        return min_node, min_cost_r
 
     def tLR(self, node, num=1):
         """

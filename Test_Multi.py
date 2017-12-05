@@ -42,7 +42,7 @@ def Test():
 if __name__ == '__main__':
     sum = 0
     a = time.time()
-    Test()
+    Test_temp()
     b = time.time()
     eval = math.floor((b - a) * 100000) / 100
     sum += eval
