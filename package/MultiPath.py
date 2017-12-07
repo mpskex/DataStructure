@@ -93,12 +93,13 @@ class MultiPath(object):
             print "[!!]\tWarning\tPoint Index out of range\t[!!]"
             return False
         p = PathTree.TreeNode(int(point))
+        p._type_ = _type_
         p.cost = 0
         p.cost_limit = int(time_cost)
         self.keypoints.append(p)
         return True
 
-    def AddWayPoint(self, point):
+    def AddWayPoint(self, point, _type_=0):
         """
         #   Add WayPoint
         #   --------------------------------------------
@@ -115,9 +116,11 @@ class MultiPath(object):
             if n.data == point:
                 return False
         #   over the map
-        if point > self.singlepath_list[0].map_size:
+        if point > self.singlepath_list[_type_].map_size:
             return False
-        self.waypoints.append(PathTree.TreeNode(point))
+        p = PathTree.TreeNode(point)
+        p._type_ = _type_
+        self.waypoints.append(p)
         return True
 
         

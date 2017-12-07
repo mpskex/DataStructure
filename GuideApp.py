@@ -21,7 +21,10 @@ DATABASE = 'database.db'
 
 #   Initialize the objects
 app = Flask(__name__)
-mp = MultiPath.MultiPath(["map/map_data.npy"])
+mp = MultiPath.MultiPath(
+        ["map/walk_map.npy", 
+        "map/bike_map.npy", 
+        "map/car_map.npy"])
 
 #	The coordinates is for
 #	generating the path using svg
