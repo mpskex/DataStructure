@@ -105,8 +105,6 @@ def ShowPath():
 	Calculate & show the path
 	"""
 	if len(node_str)>1:
-		if not mp.AddKeyPoint(node_str[0][0], 9999):
-			print "[!!]\tFailed to create dst node!\t[!!]"
 		depth = request.form.get('path_depth')
 		print "[*]\tpath depth is \t", depth
 		print "[*]\tnodes\t\n", "\tkeypoints: ",mp.keypoints, "\n\twaypoints: ",mp.waypoints 
@@ -169,6 +167,8 @@ def AddWayPoint():
 			print "[*]\tNote\tThe first seen node will be the begin node!"
 			begin_node = node_num
 			print "[*]\tNote\t Begin with node ", begin_node
+			if mp.AddKeyPoint(int(node_num), 9999, _type_=int(node_trans)):
+				print "[!!]\tFailed to create dst node!\t[!!]"
 			node_str.append((node_num, PointToHtml(int(node_num), u'begin', int(node_trans), cost_limit)))
 			return redirect(url_for('index'))
 		if node_type == 'keynode':
@@ -259,10 +259,28 @@ def PointToHtml(num, typ, trans, limit):
 		s += u'普通路径点'
 		s += u'<br>'
 		s += u'限制: 无'
+		s += u'&nbsp'
+		if trans== 0:
+			s += u'出行方式：走路'
+		elif trans == 1:
+			s += u'出行方式：自行车'
+		elif trans == 2:
+			s += u'出行方式：自驾车'
+		else:
+			return False
 	elif typ==u'begin':
 		s += u'起点'
 		s += u'<br>'
 		s += u'限制：无'
+		s += u'&nbsp'
+		if trans== 0:
+			s += u'出行方式：走路'
+		elif trans == 1:
+			s += u'出行方式：自行车'
+		elif trans == 2:
+			s += u'出行方式：自驾车'
+		else:
+			return False
 	else:
 		return False
 	s += u'</div>'

@@ -233,11 +233,12 @@ class MultiPath(object):
                 #   Build Path Tree
                 ptree = PathTree.PathTree(node_dst, way_nodes, node_src)
                 #   Update all cost on each nodes
-                ptree.UpdateCost(ptree.NodeTree, self.singlepath_list[node_src._type_].dist)
+                #   transport type defined by its source node
+                ptree.UpdateCost(ptree.NodeTree, self.singlepath_list)
                 ptree.Print()
                 print "[*]\tPath depth limit is ", depth
                 print "[*]\tReducing branches..."
-                ptree.ReduceTree(ptree.NodeTree, self.singlepath_list[node_src._type_].dist, node_dst.cost_limit, depth)
+                ptree.ReduceTree(ptree.NodeTree, self.singlepath_list, node_dst.cost_limit, depth)
                 ptree.Print()
                 print "[*]\tTree reduced!\n"
                 print "[*]\tSorting Tree..."

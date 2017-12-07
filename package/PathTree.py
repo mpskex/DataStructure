@@ -105,7 +105,7 @@ class PathTree(object):
         self.NodeTree = parent
         return parent
 
-    def UpdateCost(self, root, dist_matrix, num=1):
+    def UpdateCost(self, root, spath_obj, num=1):
         """
         #   update the cost
         #   --------------------------------------------
@@ -114,13 +114,13 @@ class PathTree(object):
         #       num:    count num start
         """
         for i in root.child:
-            i.cost = root.cost + dist_matrix[i.data][root.data]
+            i.cost = root.cost + spath_obj[i._type_].dist[i.data][root.data]
             i.depth = num
-            self.UpdateCost(i, dist_matrix, num+1)
+            self.UpdateCost(i, spath_obj, num+1)
         if num==1:
-            self.straight_dist = dist_matrix[self.lastleaf.data][root.data]
+            self.straight_dist = spath_obj[self.lastleaf._type_].dist[self.lastleaf.data][root.data]
 
-    def ReduceTree(self, root, dist_matrix, cost_limit, depth, num=1):
+    def ReduceTree(self, root, spath_obj, cost_limit, depth, num=1):
         """
         #   cut the branch which mismatch the limit of cost
         #   --------------------------------------------
@@ -129,12 +129,12 @@ class PathTree(object):
         #       num:    count num start
         """
         for i in root.child[:]:
-            total_cost = i.cost + dist_matrix[self.lastleaf.data][i.data]
+            total_cost = i.cost + spath_obj[self.lastleaf._type_].dist[self.lastleaf.data][i.data]
             print "to ", i.data, " path length is ", total_cost, " limit is : ", cost_limit
             if total_cost > cost_limit or num >= depth:
                 root.child.remove(i)
             else:
-                self.ReduceTree(i, dist_matrix, cost_limit, num=num+1, depth=depth)
+                self.ReduceTree(i, spath_obj, cost_limit, num=num+1, depth=depth)
 
     def SortTree(self, root):
         """
