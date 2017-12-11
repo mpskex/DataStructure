@@ -167,8 +167,8 @@ def AddWayPoint():
 			print "[*]\tNote\tThe first seen node will be the begin node!"
 			begin_node = node_num
 			print "[*]\tNote\t Begin with node ", begin_node
-			if mp.AddKeyPoint(int(node_num), 9999, _type_=int(node_trans)):
-				print "[!!]\tFailed to create dst node!\t[!!]"
+			#if mp.AddKeyPoint(int(node_num), 9999, _type_=int(node_trans)):
+				#print "[!!]\tFailed to create dst node!\t[!!]"
 			node_str.append((node_num, PointToHtml(int(node_num), u'begin', int(node_trans), cost_limit)))
 			return redirect(url_for('index'))
 		if node_type == 'keynode':

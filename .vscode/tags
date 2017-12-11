@@ -6,35 +6,38 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 AddChild	../package/PathTree.py	/^    def AddChild(self, child):$/;"	kind:member	line:44
 AddKeyPoint	../package/MultiPath.py	/^    def AddKeyPoint(self, point, time_cost, _type_=0):$/;"	kind:member	line:69
-AddWayPoint	../GuideApp.py	/^def AddWayPoint():$/;"	kind:function	line:146
-AddWayPoint	../package/MultiPath.py	/^    def AddWayPoint(self, point):$/;"	kind:member	line:101
-CalcMultiPath	../package/MultiPath.py	/^    def CalcMultiPath(self, point_i, depth):$/;"	kind:member	line:179
+AddWayPoint	../GuideApp.py	/^def AddWayPoint():$/;"	kind:function	line:147
+AddWayPoint	../package/MultiPath.py	/^    def AddWayPoint(self, point, _type_=0):$/;"	kind:member	line:102
+CalcMultiPath	../package/MultiPath.py	/^    def CalcMultiPath(self, point_i, depth):$/;"	kind:member	line:182
 CreateTree	../package/PathTree.py	/^    def CreateTree(self, parent, child_list):$/;"	kind:member	line:81
 DATABASE	../GuideApp.py	/^DATABASE = 'database.db'$/;"	kind:variable	line:20
 FindPath	../package/PathTree.py	/^    def FindPath(self, node):$/;"	kind:member	line:157
 Flask	../GuideApp.py	/^from flask import Flask, request, url_for, render_template, make_response$/;"	kind:namespace	line:15
 GuideApp.py	../GuideApp.py	1;"	kind:file	line:1
 INFINITE	../tools/genMap.py	/^INFINITE = 9999$/;"	kind:variable	line:11
+INFINITE	../tools/mulMap.py	/^INFINITE = 9999$/;"	kind:variable	line:10
+INFINITE	../tools/showMap.py	/^INFINITE = 9999$/;"	kind:variable	line:10
 MultiPath	../Test_Multi.py	/^from package import MultiPath$/;"	kind:namespace	line:12
+MultiPath	../console.py	/^from package import MultiPath$/;"	kind:namespace	line:13
 MultiPath	../package/MultiPath.py	/^class MultiPath(object):$/;"	kind:class	line:13
 MultiPath.py	../package/MultiPath.py	1;"	kind:file	line:1
-PathToHtml	../GuideApp.py	/^def PathToHtml(n_a, n_b, color):$/;"	kind:function	line:268
+PathToHtml	../GuideApp.py	/^def PathToHtml(n_a, n_b, color):$/;"	kind:function	line:289
 PathTree	../package/MultiPath.py	/^import PathTree$/;"	kind:namespace	line:7
 PathTree	../package/PathTree.py	/^class PathTree(object):$/;"	kind:class	line:49
 PathTree.py	../package/PathTree.py	1;"	kind:file	line:1
-PointToHtml	../GuideApp.py	/^def PointToHtml(num, typ, trans, limit):$/;"	kind:function	line:234
+PointToHtml	../GuideApp.py	/^def PointToHtml(num, typ, trans, limit):$/;"	kind:function	line:237
 Print	../package/PathTree.py	/^    def Print(self):$/;"	kind:member	line:207
 Print	../package/PathTree.py	/^def Print(node):$/;"	kind:function	line:25
 PrintStatus	../package/MultiPath.py	/^    def PrintStatus(self):$/;"	kind:member	line:61
-ReduceTree	../package/PathTree.py	/^    def ReduceTree(self, root, dist_matrix, cost_limit, depth, num=1):$/;"	kind:member	line:123
-Remove	../GuideApp.py	/^def Remove():$/;"	kind:function	line:78
-RemoveAll	../GuideApp.py	/^def RemoveAll():$/;"	kind:function	line:136
+ReduceTree	../package/PathTree.py	/^    def ReduceTree(self, root, spath_obj, cost_limit, depth, num=1):$/;"	kind:member	line:123
+Remove	../GuideApp.py	/^def Remove():$/;"	kind:function	line:81
+RemoveAll	../GuideApp.py	/^def RemoveAll():$/;"	kind:function	line:137
 RemovePoint	../package/MultiPath.py	/^    def RemovePoint(self, num):$/;"	kind:member	line:48
 RemovePoints	../package/MultiPath.py	/^    def RemovePoints(self):$/;"	kind:member	line:44
 SGT_Floyd_Update	../package/SinglePath.py	/^    def SGT_Floyd_Update(self):$/;"	kind:member	line:86
 SSSP_Floyd	../package/SinglePath.py	/^    def SSSP_Floyd(self, node_src, node_dst):$/;"	kind:member	line:108
 SetChilds	../package/PathTree.py	/^    def SetChilds(self, child_list):$/;"	kind:member	line:42
-ShowPath	../GuideApp.py	/^def ShowPath():$/;"	kind:function	line:100
+ShowPath	../GuideApp.py	/^def ShowPath():$/;"	kind:function	line:103
 SinglePath	../package/MultiPath.py	/^import SinglePath$/;"	kind:namespace	line:6
 SinglePath	../package/PathTree.py	/^import SinglePath$/;"	kind:namespace	line:8
 SinglePath	../package/SinglePath.py	/^class SinglePath(object):$/;"	kind:class	line:15
@@ -45,11 +48,11 @@ Test_Multi.py	../Test_Multi.py	1;"	kind:file	line:1
 Test_OOL	../Test_Multi.py	/^def Test_OOL():$/;"	kind:function	line:15
 Test_Single.py	../Test_Single.py	1;"	kind:file	line:1
 TreeNode	../package/PathTree.py	/^class TreeNode(object):$/;"	kind:class	line:32
-UpdateCost	../package/PathTree.py	/^    def UpdateCost(self, root, dist_matrix, num=1):$/;"	kind:member	line:108
+UpdateCost	../package/PathTree.py	/^    def UpdateCost(self, root, spath_obj, num=1):$/;"	kind:member	line:108
 __GenPath__	../package/SinglePath.py	/^    def __GenPath__(self, map):$/;"	kind:member	line:54
 __LoadMap__	../package/SinglePath.py	/^    def __LoadMap__(self, path2map):$/;"	kind:member	line:45
-__Macro_Path_Out__	../package/MultiPath.py	/^    def __Macro_Path_Out__(self, tree, lastleaf, way_nodes):$/;"	kind:member	line:124
-__Micro_Path_Out__	../package/MultiPath.py	/^    def __Micro_Path_Out__(self, root, lastleaf):$/;"	kind:member	line:157
+__Macro_Path_Out__	../package/MultiPath.py	/^    def __Macro_Path_Out__(self, tree, lastleaf, way_nodes):$/;"	kind:member	line:127
+__Micro_Path_Out__	../package/MultiPath.py	/^    def __Micro_Path_Out__(self, root, lastleaf):$/;"	kind:member	line:160
 __all__	../package/__init__.py	/^__all__ = ['SinglePath', 'PathTree', 'MultiPath']/;"	kind:variable	line:8
 __init__	../package/MultiPath.py	/^    def __init__(self, map_path_list):$/;"	kind:member	line:27
 __init__	../package/PathTree.py	/^    def __init__(self, data):$/;"	kind:member	line:33
@@ -60,41 +63,54 @@ a	../Test_Multi.py	/^    a = time.time()$/;"	kind:variable	line:50
 abort	../GuideApp.py	/^from flask import abort, redirect$/;"	kind:namespace	line:16
 app	../GuideApp.py	/^app = Flask(__name__)$/;"	kind:variable	line:23
 b	../Test_Multi.py	/^    b = time.time()$/;"	kind:variable	line:53
-begin_node	../GuideApp.py	/^begin_node = ''$/;"	kind:variable	line:61
-connect_db	../GuideApp.py	/^def connect_db():$/;"	kind:function	line:231
+begin_node	../GuideApp.py	/^begin_node = ''$/;"	kind:variable	line:64
+connect_db	../GuideApp.py	/^def connect_db():$/;"	kind:function	line:234
+console	../console.py	/^def console():$/;"	kind:function	line:39
+console.py	../console.py	1;"	kind:file	line:1
 copy	../package/MultiPath.py	/^import copy$/;"	kind:namespace	line:4
 copy	../package/PathTree.py	/^import copy$/;"	kind:namespace	line:6
 eval	../Test_Multi.py	/^    eval = math.floor((b - a) * 100000) \/ 100$/;"	kind:variable	line:54
 g	../Test_Single.py	/^    g = SinglePath.SinglePath("map\/map_data.npy")$/;"	kind:variable	line:11
-g	../package/MultiPath.py	/^    g = MultiPath(["map_data.npy"])$/;"	kind:variable	line:289
+g	../package/MultiPath.py	/^    g = MultiPath(["map_data.npy"])$/;"	kind:variable	line:293
 g	../package/SinglePath.py	/^    g = SinglePath("map_data.npy")$/;"	kind:variable	line:133
 genMap.py	../tools/genMap.py	1;"	kind:file	line:1
 getData	../package/SinglePath.py	/^    def getData(self):$/;"	kind:member	line:69
-help	../GuideApp.py	/^def help():$/;"	kind:function	line:199
-index	../GuideApp.py	/^def index():$/;"	kind:function	line:65
-internal_error	../GuideApp.py	/^def internal_error(error):$/;"	kind:function	line:215
-internal_error	../GuideApp.py	/^def internal_error(error):$/;"	kind:function	line:220
-internal_error	../GuideApp.py	/^def internal_error(error):$/;"	kind:function	line:224
-internal_error	../GuideApp.py	/^def internal_error(error):$/;"	kind:function	line:228
-login	../GuideApp.py	/^def login():$/;"	kind:function	line:203
+help	../GuideApp.py	/^def help():$/;"	kind:function	line:202
+index	../GuideApp.py	/^def index():$/;"	kind:function	line:68
+internal_error	../GuideApp.py	/^def internal_error(error):$/;"	kind:function	line:218
+internal_error	../GuideApp.py	/^def internal_error(error):$/;"	kind:function	line:223
+internal_error	../GuideApp.py	/^def internal_error(error):$/;"	kind:function	line:227
+internal_error	../GuideApp.py	/^def internal_error(error):$/;"	kind:function	line:231
+login	../GuideApp.py	/^def login():$/;"	kind:function	line:206
 main	../tools/genMap.py	/^def main():$/;"	kind:function	line:13
+main	../tools/mulMap.py	/^def main():$/;"	kind:function	line:12
+main	../tools/showMap.py	/^def main():$/;"	kind:function	line:12
 make_response	../GuideApp.py	/^from flask import Flask, request, url_for, render_template, make_response$/;"	kind:namespace	line:15
 math	../Test_Multi.py	/^import math$/;"	kind:namespace	line:9
-mp	../GuideApp.py	/^mp = MultiPath.MultiPath(["map\/map_data.npy"])$/;"	kind:variable	line:24
-node_str	../GuideApp.py	/^node_str = []$/;"	kind:variable	line:59
+math	../console.py	/^import math$/;"	kind:namespace	line:10
+mp	../GuideApp.py	/^mp = MultiPath.MultiPath($/;"	kind:variable	line:24
+mp	../console.py	/^mp = MultiPath.MultiPath($/;"	kind:variable	line:34
+mulMap.py	../tools/mulMap.py	1;"	kind:file	line:1
+node_str	../GuideApp.py	/^node_str = []$/;"	kind:variable	line:62
 np	../package/MultiPath.py	/^import numpy as np$/;"	kind:namespace	line:5
 np	../package/PathTree.py	/^import numpy as np$/;"	kind:namespace	line:7
 np	../package/SinglePath.py	/^import numpy as np$/;"	kind:namespace	line:4
 np	../tools/genMap.py	/^import numpy as np$/;"	kind:namespace	line:9
+np	../tools/mulMap.py	/^import numpy as np$/;"	kind:namespace	line:8
+np	../tools/showMap.py	/^import numpy as np$/;"	kind:namespace	line:8
 os	../Test_Multi.py	/^import os$/;"	kind:namespace	line:8
+os	../console.py	/^import os$/;"	kind:namespace	line:8
 os	../package/PathTree.py	/^import os$/;"	kind:namespace	line:4
 os	../package/SinglePath.py	/^import os$/;"	kind:namespace	line:2
 os	../tools/genMap.py	/^import os$/;"	kind:namespace	line:8
-page_not_found	../GuideApp.py	/^def page_not_found(error):$/;"	kind:function	line:211
-papers	../GuideApp.py	/^def papers():$/;"	kind:function	line:195
-path_str	../GuideApp.py	/^path_str = ""$/;"	kind:variable	line:60
-point_cord	../GuideApp.py	/^point_cord=[$/;"	kind:variable	line:28
-point_name	../GuideApp.py	/^point_name=[$/;"	kind:variable	line:47
+os	../tools/mulMap.py	/^import os$/;"	kind:namespace	line:7
+os	../tools/showMap.py	/^import os$/;"	kind:namespace	line:7
+page_not_found	../GuideApp.py	/^def page_not_found(error):$/;"	kind:function	line:214
+papers	../GuideApp.py	/^def papers():$/;"	kind:function	line:198
+path_str	../GuideApp.py	/^path_str = ""$/;"	kind:variable	line:63
+point_cord	../GuideApp.py	/^point_cord=[$/;"	kind:variable	line:31
+point_name	../GuideApp.py	/^point_name=[$/;"	kind:variable	line:50
+point_name	../console.py	/^point_name=[$/;"	kind:variable	line:22
 pt	../package/PathTree.py	/^    pt = PathTree(TreeNode(0),[TreeNode(2),TreeNode(3),TreeNode(4)], TreeNode(5))$/;"	kind:variable	line:219
 re	../package/PathTree.py	/^import re$/;"	kind:namespace	line:5
 re	../package/SinglePath.py	/^import re$/;"	kind:namespace	line:3
@@ -102,10 +118,14 @@ redirect	../GuideApp.py	/^from flask import abort, redirect$/;"	kind:namespace	l
 render_template	../GuideApp.py	/^from flask import Flask, request, url_for, render_template, make_response$/;"	kind:namespace	line:15
 request	../GuideApp.py	/^from flask import Flask, request, url_for, render_template, make_response$/;"	kind:namespace	line:15
 setData	../package/SinglePath.py	/^    def setData(self, data):$/;"	kind:member	line:77
+showMap.py	../tools/showMap.py	1;"	kind:file	line:1
 sqlite3	../GuideApp.py	/^import sqlite3$/;"	kind:namespace	line:14
 sum	../Test_Multi.py	/^    sum = 0$/;"	kind:variable	line:49
+sys	../console.py	/^import sys$/;"	kind:namespace	line:9
 tLR	../package/PathTree.py	/^    def tLR(self, node, num=1):$/;"	kind:member	line:194
-test	../GuideApp.py	/^def test():$/;"	kind:function	line:207
+test	../GuideApp.py	/^def test():$/;"	kind:function	line:210
 time	../Test_Multi.py	/^import time$/;"	kind:namespace	line:10
+time	../console.py	/^import time$/;"	kind:namespace	line:11
 toString	../package/PathTree.py	/^    def toString(self):$/;"	kind:member	line:46
+trans_name	../console.py	/^trans_name=[$/;"	kind:variable	line:16
 url_for	../GuideApp.py	/^from flask import Flask, request, url_for, render_template, make_response$/;"	kind:namespace	line:15

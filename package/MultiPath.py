@@ -188,6 +188,7 @@ class MultiPath(object):
         """
         #   Add the begin node to the key node list
         key_nodes = copy.deepcopy(self.keypoints)
+        p = PathTree.TreeNode(point_i)
         key_nodes.insert(0, PathTree.TreeNode(point_i))
         key_nodes[0].cost_limit = self.INFINITE
         t_dst = PathTree.TreeNode(point_i)

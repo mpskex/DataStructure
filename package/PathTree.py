@@ -165,7 +165,7 @@ class PathTree(object):
         min_cost = self.INFINITE
         #   if it is straght-to
         #   then return the straight-to dist
-        min_cost_r = self.straight_dist
+        min_cost = self.straight_dist
         min_node = node
         #   Push the Item into a stack
         if node.child == []:
@@ -177,7 +177,7 @@ class PathTree(object):
             #   if it has child
             #   other word the tree is not empty
             #   then get the smallest dist
-            min_cost_r = self.INFINITE
+            min_cost = self.INFINITE
             #   pop a item
             cur_node = stack[-1]
             del stack[-1]
@@ -186,10 +186,9 @@ class PathTree(object):
                     min_node = cur_node
                     min_cost = min_node.cost
                 continue
-            min_cost_r = min_cost
             for i in range(0,len(cur_node.child)):
                 stack.append(cur_node.child[i])
-        return min_node, min_cost_r
+        return min_node, min_cost
 
     def tLR(self, node, num=1):
         """
